@@ -1,0 +1,24 @@
+$medium-screen: 768px;
+
+.navbar-wrapper {
+  position: fixed;
+  width: 100%;
+  background-color: #0c111b;
+  z-index: 1000;
+  .navbar-brand-wrapper {
+    .navbar-logo {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #ff00ff,
+        0 0 70px #ff00ff, 0 0 80px #ff00ff, 0 0 100px #ff00ff, 0 0 150px #ff00ff;
+    }
+  }
+  .menunav-wrapper {
+    @media screen and (max-width: $medium-screen) {
+      display: none;
+    }
+  }
+  .burger-wrapper {
+    @media screen and (min-width: $medium-screen) {
+      display: none;
+    }
+  }
+}

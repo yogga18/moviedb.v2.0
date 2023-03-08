@@ -1,0 +1,28 @@
+.genres-wrapper {
+  .card-genres-wrapper {
+    transition: transform 0.5s;
+
+    &:hover {
+      transform: scale(0.8);
+    }
+  }
+}
+
+.genres-detail-wrapper {
+  .card-wrapper {
+    &:hover {
+      .card-overlay-wrapper {
+        display: block;
+      }
+    }
+    .card-overlay-wrapper {
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0) 10%,
+        rgba(0, 0, 0, 0) 8%,
+        rgba(0, 0, 0, 0.65) 50%
+      );
+      display: none;
+    }
+  }
+}

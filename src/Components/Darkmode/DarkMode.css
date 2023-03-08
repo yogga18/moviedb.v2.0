@@ -1,0 +1,8 @@
+#darkMode:hover,
+#darkMode:focus {
+  background-color: #000;
+}
+
+#darkMode.clicked {
+  background-color: #000;
+}

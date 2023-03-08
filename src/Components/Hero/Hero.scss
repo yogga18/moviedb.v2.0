@@ -1,0 +1,48 @@
+$medium-screen: 768px;
+
+.hero-wrapper {
+  .hero-side-a {
+    @media screen and (max-width: $medium-screen) {
+      display: none;
+    }
+
+    .card-hero-wrapper {
+      border: none;
+      .card-hero-overlay-wrapper {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        z-index: 100;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
+          0 0 40px #ff00ff, 0 0 70px #ff00ff, 0 0 80px #ff00ff,
+          0 0 100px #ff00ff, 0 0 150px #ff00ff;
+      }
+      .hero-img {
+        filter: brightness(0.6);
+        border: none;
+      }
+    }
+  }
+  .hero-side-b {
+    .card-hero-wrapper {
+      border: none;
+      .card-hero-overlay-wrapper {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        z-index: 100;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff,
+          0 0 40px #ff00ff, 0 0 70px #ff00ff, 0 0 80px #ff00ff,
+          0 0 100px #ff00ff, 0 0 150px #ff00ff;
+      }
+      .hero-img {
+        filter: brightness(0.6);
+        border: none;
+      }
+    }
+  }
+}

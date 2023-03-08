@@ -1,0 +1,25 @@
+:root {
+  --text-darkmode: #fff;
+  --text-lightmode: #000;
+  --background-color-lightmode: #fff;
+  --background-color-darkmode: #000;
+}
+
+body {
+  background-color: var(--background-color-lightmode);
+  color: var(--text-lightmode);
+  height: 200vh;
+  overflow-x: hidden;
+}
+
+body.light {
+  background-color: var(--background-color-lightmode);
+  color: var(--text-lightmode);
+  transition: all 0.5s ease;
+}
+
+body.dark {
+  background-color: var(--background-color-darkmode);
+  color: var(--text-darkmode);
+  transition: all 0.5s ease;
+}

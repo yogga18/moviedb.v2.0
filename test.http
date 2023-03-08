@@ -1,0 +1,14 @@
+// Search
+# GET https://api.themoviedb.org/3/search/movie?query=fire-of-love&api_key=ba57158e113b297b193e71fffbecfb62
+
+// List genre
+# GET https://api.themoviedb.org/3/genre/movie/list?api_key=ba57158e113b297b193e71fffbecfb62
+
+// List movie by genre
+# GET https://api.themoviedb.org/3/discover/movie?with_genres=99&api_key=ba57158e113b297b193e71fffbecfb62
+
+// images collection
+# GET https://image.tmdb.org/t/p/w500/8uO0gUM8aNqYLs1OsTBQiXu0fEv.jpg
+
+// get movie trailer
+GET https://api.themoviedb.org/3/movie/315162/videos?api_key=ba57158e113b297b193e71fffbecfb62

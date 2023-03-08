@@ -1,0 +1,79 @@
+$medium-screen: 768px;
+
+.scroll-movie-wrapper {
+  max-height: 300px;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    // styling for scrollbar
+    height: 8px;
+    background-color: #0c111b;
+
+    // styling for scrollbar thumb
+    &-thumb {
+      background-color: #0d6efd;
+      border-radius: 5px;
+    }
+
+    // styling for scrollbar track
+    &-track {
+      background-color: #ffffff;
+      border-radius: 5px;
+    }
+  }
+
+  .item {
+    min-width: 150px;
+    height: 200px;
+    line-height: 125px;
+    text-align: center;
+    background-color: #ddd;
+    margin: 3px;
+
+    &:hover {
+      position: relative;
+      z-index: 1;
+      transform: scale(1);
+      top: -15px;
+
+      .card-img-overlay {
+        display: block;
+      }
+    }
+
+    .card-img-overlay {
+      display: none;
+      &:hover {
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0) 10%,
+          rgba(0, 0, 0, 0) 8%,
+          rgba(0, 0, 0, 0.65) 50%
+        );
+      }
+    }
+  }
+}
+
+.detail-movie-wrapper {
+  // height and width for detail movie wrapper
+  min-height: 100%;
+}
+
+.card-wrapper {
+  &:hover {
+    .card-overlay-wrapper {
+      display: block;
+    }
+  }
+  .card-overlay-wrapper {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0) 10%,
+      rgba(0, 0, 0, 0) 8%,
+      rgba(0, 0, 0, 0.65) 50%
+    );
+    display: none;
+  }
+}
