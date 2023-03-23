@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Collapse,
   Navbar,
@@ -7,14 +8,22 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownToggle,
 } from 'reactstrap';
 import DarkMode from '../Darkmode';
 import './Navigation.scss';
+import OffcanvasComponent from './Sidebar/OffcanvasComponent';
 
 const Navigation = () => {
   const [collapsed, setCollapsed] = useState(true);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleNavbar = () => setCollapsed(!collapsed);
+
+  const toggle = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <Navbar className='navbar-wrapper'>
@@ -32,10 +41,32 @@ const Navigation = () => {
             <b className='text-white'>About</b>
           </NavLink>
         </NavItem>
+
+        <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+          <DropdownToggle nav caret>
+            <b className='text-white'>Login</b>
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <Link className='text-decoration-none text-dark ' to='/login'>
+                <b>Login</b>
+              </Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link className='text-decoration-none text-dark' to='/register'>
+                <b>Sign Up</b>
+              </Link>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
         <NavItem className='pt-2'>
           <DarkMode />
         </NavItem>
       </Nav>
+      {/* <div className='me-2 burger-wrapper bg-white'>
+        <OffcanvasComponent />
+      </div> */}
+
       <NavbarToggler
         onClick={toggleNavbar}
         className='me-2 burger-wrapper bg-white'
@@ -52,6 +83,23 @@ const Navigation = () => {
               <b className='text-white'>About</b>
             </NavLink>
           </NavItem>
+          <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+            <DropdownToggle nav caret>
+              <b className='text-white'>Login</b>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link className='text-decoration-none text-dark'>
+                  <b>Login</b>
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link className='text-decoration-none text-dark' to='/register'>
+                  <b>Sign Up</b>
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
           <NavItem className='pt-2'>
             <DarkMode />
           </NavItem>
