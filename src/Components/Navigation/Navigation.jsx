@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Collapse,
   Navbar,
@@ -12,18 +12,25 @@ import {
   DropdownMenu,
   DropdownItem,
   DropdownToggle,
+  Button,
 } from 'reactstrap';
 import DarkMode from '../Darkmode';
 import './Navigation.scss';
 import OffcanvasComponent from './Sidebar/OffcanvasComponent';
 
 const Navigation = () => {
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleNavbar = () => setCollapsed(!collapsed);
 
   const toggle = () => setDropdownOpen(!dropdownOpen);
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    navigate('/');
+  };
 
   return (
     <Navbar className='navbar-wrapper'>
@@ -59,6 +66,13 @@ const Navigation = () => {
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
+
+        <NavItem className='navitemside'>
+          <Button size='sm' onClick={logout}>
+            Logout
+          </Button>
+        </NavItem>
+
         <NavItem className='pt-2'>
           <DarkMode />
         </NavItem>
@@ -83,6 +97,7 @@ const Navigation = () => {
               <b className='text-white'>About</b>
             </NavLink>
           </NavItem>
+
           <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
             <DropdownToggle nav caret>
               <b className='text-white'>Login</b>
@@ -100,6 +115,14 @@ const Navigation = () => {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+
+          {/* {isLogin ? (
+            <NavItem className='navitemside'>
+              <Button size='sm' onClick={logout}>
+                Logout
+              </Button>
+            </NavItem>
+          ) : null} */}
           <NavItem className='pt-2'>
             <DarkMode />
           </NavItem>

@@ -15,9 +15,18 @@ import {
 } from 'reactstrap';
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginWithEmail } from '../../store/actions';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [password1, setPassword1] = useState(true);
+
+  const { login } = useSelector((state) => state.AuthReducer);
 
   const showPassword1 = () => {
     setPassword1(!password1);
@@ -25,22 +34,43 @@ const Login = () => {
 
   const save = (values) => {
     const payload = {
-      username: values.username,
+      email: values.email,
       password: values.password,
     };
 
-    console.log(payload);
+    dispatch(loginWithEmail(payload)).then((response) => {
+      console.log('response', response);
+      if (response.success) {
+        let user = {
+          email: response.data.user.email,
+          emailVerified: response.data.user.emailVerified,
+          refreshToken: response.data.user.refreshToken,
+          accessToken: response.data.user.accessToken,
+          uid: response.data.user.uid,
+        };
+
+        console.log('user', user);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Menghapus data user dari local storage
+        // localStorage.removeItem('user');
+
+        navigate('/dashboard');
+      } else {
+        toast.warning(response.error.message);
+      }
+    });
   };
 
   const formik = useFormik({
     // 1. Initial values
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     // 2. Validation schema
     validationSchema: Yup.object({
-      username: Yup.string().required('Required'),
+      email: Yup.string().email('Invalid email address').required('Required'),
       password: Yup.string()
         .required('Password is required')
         .min(8, 'Password must be at least 8 characters'),
@@ -48,6 +78,10 @@ const Login = () => {
     // 3. Submit handler
     onSubmit: save,
   });
+
+  // logging
+  console.log('login', login);
+  // login.data.user
 
   return (
     <Fragment>
@@ -64,21 +98,19 @@ const Login = () => {
                 <form onSubmit={formik.handleSubmit}>
                   <FormGroup>
                     <Label>
-                      <b className='text-dark'>Username</b>{' '}
+                      <b className='text-dark'>Email</b>{' '}
                       <b className='text-danger'>*</b>
                     </Label>
                     <Input
-                      placeholder='Username'
-                      name='username'
-                      type='text'
-                      value={formik.values.username}
+                      placeholder='Email'
+                      name='email'
+                      type='email'
+                      value={formik.values.email}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
-                    {formik.touched.username && formik.errors.username ? (
-                      <div className='text-danger'>
-                        {formik.errors.username}
-                      </div>
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className='text-danger'>{formik.errors.email}</div>
                     ) : null}
                   </FormGroup>
                   <FormGroup>

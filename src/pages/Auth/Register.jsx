@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Col,
   Container,
@@ -15,10 +16,21 @@ import {
 } from 'reactstrap';
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerWithEmail, registerWithGoogle } from '../../store/actions';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [password1, setPassword1] = useState(true);
   const [password2, setPassword2] = useState(true);
+
+  const { regisWithEmail, regisWithGoogle } = useSelector(
+    (state) => state.AuthReducer
+  );
 
   const showPassword1 = () => {
     setPassword1(!password1);
@@ -26,6 +38,28 @@ const Register = () => {
 
   const showPassword2 = () => {
     setPassword2(!password2);
+  };
+
+  const handleRegisterSubmit = (payload) => {
+    dispatch(registerWithEmail(payload)).then((response) => {
+      if (response.success) {
+        toast.success('Register Success');
+        navigate('/login');
+      } else {
+        toast.warning(response.error.message);
+      }
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(registerWithGoogle()).then((response) => {
+      if (response.success) {
+        toast.success('Register Success');
+        navigate('/login');
+      } else {
+        toast.warning(response.error.message);
+      }
+    });
   };
 
   const save = (values) => {
@@ -36,7 +70,7 @@ const Register = () => {
       confirmPassword: values.confirmPassword,
     };
 
-    console.log(payload);
+    handleRegisterSubmit(payload);
   };
 
   const formik = useFormik({
@@ -78,6 +112,10 @@ const Register = () => {
     // 3. Submit handler
     onSubmit: save,
   });
+
+  // logging
+  console.log('registerWithEmail', regisWithEmail);
+  console.log('regisWithGoogle', regisWithGoogle);
 
   return (
     <Fragment>
@@ -194,11 +232,30 @@ const Register = () => {
                     ) : null}
                   </FormGroup>
 
-                  <Button type='submit' color='primary' className='mt-2'>
+                  <Button
+                    type='submit'
+                    color='primary'
+                    className='mt-2'
+                    disabled={
+                      regisWithEmail.isLoading || regisWithGoogle.isLoading
+                    }
+                  >
                     Register
                   </Button>
                 </form>
               </CardBody>
+              <CardFooter>
+                <Button
+                  size='sm'
+                  color='danger'
+                  onClick={handleGoogleLogin}
+                  disabled={
+                    regisWithEmail.isLoading || regisWithGoogle.isLoading
+                  }
+                >
+                  Sign Up With Google
+                </Button>
+              </CardFooter>
             </Card>
           </Col>
           <Col md='3'></Col>
