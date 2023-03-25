@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   signInWithEmailAndPassword,
+  signOut,
 } from '@firebase/auth';
 import {
   REGISTER_WITH_EMAIL_REQUEST,
@@ -15,6 +16,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 } from './actionTypes';
 
 export const registerWithEmail = (payload) => {
@@ -141,6 +145,50 @@ export const loginWithEmail = (payload) => {
 
       // custom response karena server tidak mengembalikan response failure
       return { success: false, error, isLogin: false };
+    }
+  };
+};
+
+export const justLogout = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: LOGOUT_REQUEST,
+      payload: {
+        isLoading: true,
+        isLogin: true,
+        data: [],
+        error: null,
+      },
+    });
+
+    try {
+      await signOut(auth);
+
+      dispatch({
+        type: LOGOUT_SUCCESS,
+        payload: {
+          isLoading: false,
+          isLogin: false,
+          data: [],
+          error: null,
+        },
+      });
+
+      // custom response karena server tidak mengembalikan response success
+      return { success: true, isLogin: false };
+    } catch (error) {
+      dispatch({
+        type: LOGOUT_FAILURE,
+        payload: {
+          isLoading: false,
+          isLogin: true,
+          data: [],
+          error: error.message,
+        },
+      });
+
+      // custom response karena server tidak mengembalikan response failure
+      return { success: false, error, isLogin: true };
     }
   };
 };

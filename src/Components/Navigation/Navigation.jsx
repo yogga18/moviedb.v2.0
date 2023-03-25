@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Collapse,
@@ -14,23 +15,38 @@ import {
   DropdownToggle,
   Button,
 } from 'reactstrap';
+import { justLogout } from '../../store/actions';
 import DarkMode from '../Darkmode';
 import './Navigation.scss';
 import OffcanvasComponent from './Sidebar/OffcanvasComponent';
+import PropTypes from 'prop-types';
 
 const Navigation = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [collapsed, setCollapsed] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [flagLogin, setFlagLogin] = useState(false);
+
+  const { logout } = useSelector((state) => state.AuthReducer);
 
   const toggleNavbar = () => setCollapsed(!collapsed);
 
   const toggle = () => setDropdownOpen(!dropdownOpen);
 
-  const logout = () => {
+  const handlerLogout = () => {
+    dispatch(justLogout());
+
     localStorage.removeItem('user');
+    localStorage.setItem('isLogin', JSON.stringify(false));
+
     navigate('/');
   };
+
+  useEffect(() => {
+    setFlagLogin(JSON.parse(localStorage.getItem('isLogin')));
+  }, []);
 
   return (
     <Navbar className='navbar-wrapper'>
@@ -49,29 +65,35 @@ const Navigation = () => {
           </NavLink>
         </NavItem>
 
-        <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle nav caret>
-            <b className='text-white'>Login</b>
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem>
-              <Link className='text-decoration-none text-dark ' to='/login'>
-                <b>Login</b>
-              </Link>
-            </DropdownItem>
-            <DropdownItem>
-              <Link className='text-decoration-none text-dark' to='/register'>
-                <b>Sign Up</b>
-              </Link>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        {!flagLogin ? (
+          <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+            <DropdownToggle nav caret>
+              <b className='text-white'>Login</b>
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link className='text-decoration-none text-dark ' to='/login'>
+                  <b>Login</b>
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link className='text-decoration-none text-dark' to='/register'>
+                  <b>Sign Up</b>
+                </Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : null}
 
-        <NavItem className='navitemside'>
-          <Button size='sm' onClick={logout}>
-            Logout
-          </Button>
-        </NavItem>
+        {flagLogin ? (
+          <div className='pt-1 px-2'>
+            <NavItem className='navitemside'>
+              <Button size='sm' color='light' onClick={handlerLogout}>
+                <b className='text-dark'>Logout</b>
+              </Button>
+            </NavItem>
+          </div>
+        ) : null}
 
         <NavItem className='pt-2'>
           <DarkMode />
@@ -98,31 +120,37 @@ const Navigation = () => {
             </NavLink>
           </NavItem>
 
-          <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
-            <DropdownToggle nav caret>
-              <b className='text-white'>Login</b>
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem>
-                <Link className='text-decoration-none text-dark'>
-                  <b>Login</b>
-                </Link>
-              </DropdownItem>
-              <DropdownItem>
-                <Link className='text-decoration-none text-dark' to='/register'>
-                  <b>Sign Up</b>
-                </Link>
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          {!flagLogin ? (
+            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
+              <DropdownToggle nav caret>
+                <b className='text-white'>Login</b>
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>
+                  <Link className='text-decoration-none text-dark ' to='/login'>
+                    <b>Login</b>
+                  </Link>
+                </DropdownItem>
+                <DropdownItem>
+                  <Link
+                    className='text-decoration-none text-dark'
+                    to='/register'
+                  >
+                    <b>Sign Up</b>
+                  </Link>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : null}
 
-          {/* {isLogin ? (
+          {flagLogin ? (
             <NavItem className='navitemside'>
-              <Button size='sm' onClick={logout}>
+              <Button size='sm' onClick={handlerLogout}>
                 Logout
               </Button>
             </NavItem>
-          ) : null} */}
+          ) : null}
+
           <NavItem className='pt-2'>
             <DarkMode />
           </NavItem>
@@ -131,5 +159,7 @@ const Navigation = () => {
     </Navbar>
   );
 };
+
+Navigation.propTypes = {};
 
 export default Navigation;

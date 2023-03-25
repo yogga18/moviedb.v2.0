@@ -8,6 +8,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -24,6 +27,12 @@ const initialState = {
   login: {
     isLoading: false,
     isLogin: false,
+    data: [],
+    error: null,
+  },
+  logout: {
+    isLoading: false,
+    isLogout: false,
     data: [],
     error: null,
   },
@@ -128,6 +137,42 @@ const regisWithEmailReducer = (state = initialState, action) => {
           ...state.login,
           isLoading: false,
           isLogin: false,
+          data: [],
+          error: action.payload.error,
+        },
+      });
+
+    case LOGOUT_REQUEST:
+      return (state = {
+        ...state,
+        logout: {
+          ...state.logout,
+          isLoading: true,
+          isLogout: false,
+          data: [],
+          error: null,
+        },
+      });
+
+    case LOGOUT_SUCCESS:
+      return (state = {
+        ...state,
+        logout: {
+          ...state.logout,
+          isLoading: false,
+          isLogout: true,
+          data: action.payload.data ?? [],
+          error: null,
+        },
+      });
+
+    case LOGOUT_FAILURE:
+      return (state = {
+        ...state,
+        logout: {
+          ...state.logout,
+          isLoading: false,
+          isLogout: false,
           data: [],
           error: action.payload.error,
         },

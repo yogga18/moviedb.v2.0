@@ -49,11 +49,7 @@ const Login = () => {
           uid: response.data.user.uid,
         };
 
-        console.log('user', user);
         localStorage.setItem('user', JSON.stringify(user));
-
-        // Menghapus data user dari local storage
-        // localStorage.removeItem('user');
 
         navigate('/dashboard');
       } else {
@@ -78,10 +74,6 @@ const Login = () => {
     // 3. Submit handler
     onSubmit: save,
   });
-
-  // logging
-  console.log('login', login);
-  // login.data.user
 
   return (
     <Fragment>

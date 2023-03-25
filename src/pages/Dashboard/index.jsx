@@ -3,16 +3,6 @@ import { Container } from 'reactstrap';
 import Navigation from '../../Components/Navigation/Navigation';
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState();
-
-  useEffect(() => {
-    let storedUser = localStorage.getItem('user');
-    let user = JSON.parse(storedUser);
-    setUserData(user || {});
-  }, []);
-
-  console.log('userData', userData);
-
   return (
     <Fragment>
       <Navigation />
