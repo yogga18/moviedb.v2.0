@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Col,
   Container,
@@ -17,7 +16,7 @@ import {
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerWithEmail, registerWithGoogle } from '../../store/actions';
+import { registerWithEmail } from '../../store/actions';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,9 +27,7 @@ const Register = () => {
   const [password1, setPassword1] = useState(true);
   const [password2, setPassword2] = useState(true);
 
-  const { regisWithEmail, regisWithGoogle } = useSelector(
-    (state) => state.AuthReducer
-  );
+  const { regisWithEmail } = useSelector((state) => state.AuthReducer);
 
   const showPassword1 = () => {
     setPassword1(!password1);
@@ -42,17 +39,6 @@ const Register = () => {
 
   const handleRegisterSubmit = (payload) => {
     dispatch(registerWithEmail(payload)).then((response) => {
-      if (response.success) {
-        toast.success('Register Success');
-        navigate('/login');
-      } else {
-        toast.warning(response.error.message);
-      }
-    });
-  };
-
-  const handleGoogleLogin = () => {
-    dispatch(registerWithGoogle()).then((response) => {
       if (response.success) {
         toast.success('Register Success');
         navigate('/login');
@@ -112,10 +98,6 @@ const Register = () => {
     // 3. Submit handler
     onSubmit: save,
   });
-
-  // logging
-  console.log('registerWithEmail', regisWithEmail);
-  console.log('regisWithGoogle', regisWithGoogle);
 
   return (
     <Fragment>
@@ -236,26 +218,12 @@ const Register = () => {
                     type='submit'
                     color='primary'
                     className='mt-2'
-                    disabled={
-                      regisWithEmail.isLoading || regisWithGoogle.isLoading
-                    }
+                    disabled={regisWithEmail.isLoading}
                   >
                     Register
                   </Button>
                 </form>
               </CardBody>
-              <CardFooter>
-                <Button
-                  size='sm'
-                  color='danger'
-                  onClick={handleGoogleLogin}
-                  disabled={
-                    regisWithEmail.isLoading || regisWithGoogle.isLoading
-                  }
-                >
-                  Sign Up With Google
-                </Button>
-              </CardFooter>
             </Card>
           </Col>
           <Col md='3'></Col>

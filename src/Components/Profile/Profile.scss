@@ -1,0 +1,19 @@
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto;
+}
+
+// Profile Detail
+.profile-card {
+  margin: 0 auto;
+  .detail-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+  }
+}

@@ -2,6 +2,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DetailMovies from './Components/Movie/DetailMovies';
+import DetailProfile from './Components/Profile/DetailProfile';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
 import Login from './pages/Auth/Login';
@@ -42,6 +43,7 @@ function App() {
             <Route path='/detail-movie/:id' element={<DetailMovies />} />
             {/* Protected Routes */}
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/profile' element={<DetailProfile />} />
           </Routes>
         </Router>
       ) : (

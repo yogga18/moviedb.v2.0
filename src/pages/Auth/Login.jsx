@@ -16,7 +16,7 @@ import {
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginWithEmail } from '../../store/actions';
+import { loginWithEmail, registerWithGoogle } from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -39,7 +39,7 @@ const Login = () => {
     };
 
     dispatch(loginWithEmail(payload)).then((response) => {
-      console.log('response', response);
+      // console.log('response', response);
       if (response.success) {
         let user = {
           email: response.data.user.email,
@@ -47,6 +47,28 @@ const Login = () => {
           refreshToken: response.data.user.refreshToken,
           accessToken: response.data.user.accessToken,
           uid: response.data.user.uid,
+          photoURL: response.data.user.photoURL || '',
+        };
+
+        localStorage.setItem('user', JSON.stringify(user));
+
+        navigate('/dashboard');
+      } else {
+        toast.warning(response.error.message);
+      }
+    });
+  };
+
+  const handleGoogleLogin = () => {
+    dispatch(registerWithGoogle()).then((response) => {
+      if (response.success) {
+        let user = {
+          email: response.data.user.email,
+          emailVerified: response.data.user.emailVerified,
+          refreshToken: response.data.user.refreshToken,
+          accessToken: response.data.user.accessToken,
+          uid: response.data.user.uid,
+          photoURL: response.data.user.photoURL || '',
         };
 
         localStorage.setItem('user', JSON.stringify(user));
@@ -136,9 +158,14 @@ const Login = () => {
                     ) : null}
                   </FormGroup>
 
-                  <Button type='submit' color='primary' className='mt-2'>
-                    Login
-                  </Button>
+                  <div className='mt-2 d-flex gap-3'>
+                    <Button type='submit' color='primary'>
+                      Login
+                    </Button>
+                    <Button color='danger' onClick={handleGoogleLogin}>
+                      Google
+                    </Button>
+                  </div>
                 </form>
               </CardBody>
             </Card>
