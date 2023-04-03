@@ -24,6 +24,7 @@ import PropTypes from 'prop-types';
 const Navigation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const path = window.location.pathname;
 
   const [collapsed, setCollapsed] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,7 +42,11 @@ const Navigation = () => {
     localStorage.removeItem('user');
     localStorage.setItem('isLogin', JSON.stringify(false));
 
-    navigate('/');
+    if (path !== '/') {
+      navigate('/');
+    } else {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
