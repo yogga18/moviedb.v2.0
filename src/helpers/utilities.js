@@ -1,3 +1,4 @@
+// Just for Encrypted Storage and Decrypted Storage
 import CryptoJS from 'crypto-js';
 
 export const SECRET_KEY = 'SECRET_KEY';

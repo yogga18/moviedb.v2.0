@@ -2,14 +2,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Badge, Col, Row } from 'reactstrap';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
-import helper from '../../helpers/utilities.js';
+import encdec from '../../../encdec.js';
 
 const Profile = () => {
   const [user, setUser] = useState({});
 
   const getLocalStrg = () => {
     const encryptedUser = localStorage.getItem('user');
-    const bytes = helper.decLocalStrg(encryptedUser);
+    const bytes = encdec.decLocalStrg(encryptedUser);
 
     setUser(bytes);
   };

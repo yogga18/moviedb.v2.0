@@ -3,14 +3,14 @@ import { Badge, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import Navigation from '../Navigation/Navigation';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
-import helper from '../../helpers/utilities.js';
+import encdec from '../../../encdec.js';
 
 const DetailProfile = () => {
   const [user, setUser] = useState({});
 
   const getLocalStrg = () => {
     const encryptedUser = localStorage.getItem('user');
-    const bytes = helper.decLocalStrg(encryptedUser);
+    const bytes = encdec.decLocalStrg(encryptedUser);
 
     setUser(bytes);
   };
