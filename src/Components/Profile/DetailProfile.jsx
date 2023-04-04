@@ -3,9 +3,14 @@ import { Badge, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import Navigation from '../Navigation/Navigation';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
+import CryptoJS from 'crypto-js';
 
 const DetailProfile = () => {
-  let user = JSON.parse(localStorage.getItem('user'));
+  // let user = JSON.parse(localStorage.getItem('user'));
+  const SECRET_KEY = 'SECRET_KEY';
+  const encryptedUser = localStorage.getItem('user');
+  const bytes = CryptoJS.AES.decrypt(encryptedUser, SECRET_KEY);
+  const user = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
   // logging
   console.log('user', user);

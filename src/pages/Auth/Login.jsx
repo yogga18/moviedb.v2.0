@@ -19,10 +19,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginWithEmail, registerWithGoogle } from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import encStorage from '../../helpers/encStorage';
+import CryptoJS from 'crypto-js';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const SECRET_KEY = 'SECRET_KEY';
 
   const [password1, setPassword1] = useState(true);
 
@@ -50,7 +53,12 @@ const Login = () => {
           photoURL: response.data.user.photoURL || '',
         };
 
-        localStorage.setItem('user', JSON.stringify(user));
+        // localStorage.setItem('user', JSON.stringify(user));
+        const encryptedUser = CryptoJS.AES.encrypt(
+          JSON.stringify(user),
+          SECRET_KEY
+        ).toString();
+        localStorage.setItem('user', encryptedUser);
 
         navigate('/dashboard');
       } else {

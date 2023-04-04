@@ -2,9 +2,14 @@ import React, { Fragment } from 'react';
 import { Badge, Col, Row } from 'reactstrap';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
+import CryptoJS from 'crypto-js';
 
 const Profile = () => {
-  let user = JSON.parse(localStorage.getItem('user'));
+  // let user = JSON.parse(localStorage.getItem('user'));
+  const SECRET_KEY = 'SECRET_KEY';
+  const encryptedUser = localStorage.getItem('user');
+  const bytes = CryptoJS.AES.decrypt(encryptedUser, SECRET_KEY);
+  const user = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
   return (
     <Fragment>
