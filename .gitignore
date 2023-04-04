@@ -23,5 +23,3 @@ dist-ssr
 *.sln
 *.sw?
 .env
-vite.config.js
-package-lock.json
