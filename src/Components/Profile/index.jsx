@@ -1,10 +1,22 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Badge, Col, Row } from 'reactstrap';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
+import helper from '../../helpers/utilities.js';
 
 const Profile = () => {
-  let user = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState({});
+
+  const getLocalStrg = () => {
+    const encryptedUser = localStorage.getItem('user');
+    const bytes = helper.decLocalStrg(encryptedUser);
+
+    setUser(bytes);
+  };
+
+  useEffect(() => {
+    getLocalStrg();
+  }, []);
 
   return (
     <Fragment>

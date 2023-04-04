@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginWithEmail, registerWithGoogle } from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import helper from '../../helpers/utilities.js';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,9 @@ const Login = () => {
           photoURL: response.data.user.photoURL || '',
         };
 
-        localStorage.setItem('user', JSON.stringify(user));
+        const encryptedToken = helper.encLocalStrg(user);
+
+        localStorage.setItem('user', encryptedToken);
 
         navigate('/dashboard');
       } else {
