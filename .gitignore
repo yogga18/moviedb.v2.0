@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 .env
 
-# encdec.js
+encdec.js
