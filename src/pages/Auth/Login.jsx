@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginWithEmail, registerWithGoogle } from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import encdec from '../../../encdec.js';
+import utilities from '../../helpers/utilities';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const Login = () => {
           photoURL: response.data.user.photoURL || '',
         };
 
-        const encryptedToken = encdec.encLocalStrg(user);
+        const encryptedToken = utilities.encLocalStrg(user);
 
         localStorage.setItem('user', encryptedToken);
 

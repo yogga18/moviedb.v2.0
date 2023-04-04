@@ -2,7 +2,6 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Badge, Col, Row } from 'reactstrap';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
-import encdec from '../../../encdec.js';
 import utilities from '../../helpers/utilities';
 
 const Profile = () => {

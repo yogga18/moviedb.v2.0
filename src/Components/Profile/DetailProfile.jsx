@@ -3,7 +3,6 @@ import { Badge, Card, CardBody, Col, Container, Row } from 'reactstrap';
 import Navigation from '../Navigation/Navigation';
 import './Profile.scss';
 import defaultAvatar from '../../assets/avatar-3.jpg';
-import encdec from '../../../encdec.js';
 import utilities from '../../helpers/utilities';
 
 const DetailProfile = () => {
