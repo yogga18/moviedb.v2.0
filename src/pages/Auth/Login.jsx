@@ -12,6 +12,7 @@ import {
   Input,
   Label,
   Row,
+  Spinner,
 } from 'reactstrap';
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
@@ -28,6 +29,8 @@ const Login = () => {
   const [password1, setPassword1] = useState(true);
 
   const { login } = useSelector((state) => state.AuthReducer);
+
+  console.log('login', login);
 
   const showPassword1 = () => {
     setPassword1(!password1);
@@ -74,7 +77,9 @@ const Login = () => {
           photoURL: response.data.user.photoURL || '',
         };
 
-        localStorage.setItem('user', JSON.stringify(user));
+        const encryptedToken = utilities.encLocalStrg(user);
+
+        localStorage.setItem('user', encryptedToken);
 
         navigate('/dashboard');
       } else {
@@ -162,11 +167,19 @@ const Login = () => {
                   </FormGroup>
 
                   <div className='mt-2 d-flex gap-3'>
-                    <Button type='submit' color='primary'>
-                      Login
+                    <Button
+                      type='submit'
+                      color='primary'
+                      disabled={login.isLoading}
+                    >
+                      {login.isLoading ? <Spinner color='light' /> : 'Login'}
                     </Button>
-                    <Button color='danger' onClick={handleGoogleLogin}>
-                      Google
+                    <Button
+                      color='danger'
+                      onClick={handleGoogleLogin}
+                      disabled={login.isLoading}
+                    >
+                      {login.isLoading ? <Spinner color='light' /> : 'Google'}
                     </Button>
                   </div>
                 </form>
