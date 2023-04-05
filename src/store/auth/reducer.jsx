@@ -123,7 +123,7 @@ const regisWithEmailReducer = (state = initialState, action) => {
         ...state,
         login: {
           ...state.login,
-          isLoading: true,
+          isLoading: false,
           data: action.payload.data ?? [],
           error: null,
           isLogin: true,

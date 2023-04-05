@@ -91,7 +91,12 @@ const Navigation = () => {
         ) : null}
 
         {flagLogin ? (
-          <div className='pt-1 px-2'>
+          <div className='d-flex justify-content-center align-items-center me-2 ms-0'>
+            <NavItem className='navitemside'>
+              <NavLink href='/dashboard' className='navlinkitemside'>
+                <b className='text-white'>Dashboard</b>
+              </NavLink>
+            </NavItem>
             <NavItem className='navitemside'>
               <Button size='sm' color='light' onClick={handlerLogout}>
                 <b className='text-dark'>Logout</b>
