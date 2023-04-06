@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -154,11 +154,18 @@ const Navigation = () => {
           ) : null}
 
           {flagLogin ? (
-            <NavItem className='navitemside'>
-              <Button size='sm' onClick={handlerLogout}>
-                Logout
-              </Button>
-            </NavItem>
+            <Fragment>
+              <NavItem className='navitemside'>
+                <NavLink href='/dashboard' className='navlinkitemside'>
+                  <b className='text-white'>Dashboard</b>
+                </NavLink>
+              </NavItem>
+              <NavItem className='navitemside'>
+                <Button size='sm' onClick={handlerLogout}>
+                  Logout
+                </Button>
+              </NavItem>
+            </Fragment>
           ) : null}
 
           <NavItem className='pt-2'>

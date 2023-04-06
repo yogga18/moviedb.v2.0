@@ -122,7 +122,6 @@ export const searchMovie = (query) => {
       url: `${BASE_URL}search/movie?query=${query}&api_key=${API_KEY}`,
     })
       .then((response) => {
-        console.log('response', response);
         dispatch({
           type: SEARCH_MOVIES_SUCCESS,
           payload: {
