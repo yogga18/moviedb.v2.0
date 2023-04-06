@@ -59,16 +59,22 @@ const HomePage = () => {
     }
   }, [hide]);
 
+  console.log('searchMovies', searchMovies);
+
   return (
     <Fragment>
       <Navigation />
       <Hero data={trendingMovies} />
       <SearchMovie displayHide={displayHide} />
-      {dataAllMovies.length > 0 ? (
+
+      {dataAllMovies.length > 0 && !hide ? (
         <Summry data={dataAllMovies} />
+      ) : dataAllMovies.length > 0 && hide ? (
+        <Summry data={searchMovies.data} />
       ) : (
         <Spinner color='danger' />
       )}
+
       {!hide && (
         <Fragment>
           <MovieSection
@@ -93,7 +99,9 @@ const HomePage = () => {
           />
         </Fragment>
       )}
+
       {hide && <ResultSearchMovies data={searchMovies} />}
+
       <Footer />
     </Fragment>
   );
