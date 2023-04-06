@@ -15,11 +15,8 @@
     "firebase": "^9.18.0",
     "formik": "^2.2.9",
     "moment": "^2.29.4",
-<<<<<<< HEAD
-=======
     "pdf-lib": "^1.17.1",
     "pdf-merger-js": "^4.3.0",
->>>>>>> unduh
     "pdfmake": "^0.2.7",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
