@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DetailMovies from './Components/Movie/DetailMovies';
 import DetailProfile from './Components/Profile/DetailProfile';
+import Forum from './Components/SideMenus/Forum';
+import MovieChart from './Components/SideMenus/MovieChart';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
 import Login from './pages/Auth/Login';
@@ -44,6 +46,8 @@ function App() {
             {/* Protected Routes */}
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/profile' element={<DetailProfile />} />
+            <Route path='/movie-charts' element={<MovieChart />} />
+            <Route path='/forum' element={<Forum />} />
           </Routes>
         </Router>
       ) : (

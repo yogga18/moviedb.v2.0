@@ -13,6 +13,8 @@ import MovieSection from '../../Components/Movie/MovieSection';
 import SearchMovie from '../../Components/Movie/SearchMovie';
 import ResultSearchMovies from '../../Components/Movie/ResultSearchMovies';
 import Footer from '../../Components/Footer';
+import Summry from '../../Components/Summry';
+import { Spinner } from 'reactstrap';
 
 const HomePage = () => {
   const dispatch = useDispatch();
@@ -32,20 +34,47 @@ const HomePage = () => {
     dispatch(searchMovie(query));
   };
 
+  const getAllMovies = () => {
+    dispatch(getUpcomingMovies());
+    dispatch(getReleseMovies());
+    dispatch(getTrendingMovies());
+    dispatch(getTopRetedMovies());
+  };
+
+  const upComming = movieUpcomming.data.results || [];
+  const relseMovie = relseMovies.data.results || [];
+  const trendingMovie = trendingMovies.data.results || [];
+  const topRatedMovie = topRatedMovies.data.results || [];
+
+  const dataAllMovies = [
+    ...upComming,
+    ...relseMovie,
+    ...trendingMovie,
+    ...topRatedMovie,
+  ];
+
   useEffect(() => {
     if (!hide) {
-      dispatch(getUpcomingMovies());
-      dispatch(getReleseMovies());
-      dispatch(getTrendingMovies());
-      dispatch(getTopRetedMovies());
+      getAllMovies();
     }
   }, [hide]);
+
+  console.log('searchMovies', searchMovies);
 
   return (
     <Fragment>
       <Navigation />
       <Hero data={trendingMovies} />
       <SearchMovie displayHide={displayHide} />
+
+      {dataAllMovies.length > 0 && !hide ? (
+        <Summry data={dataAllMovies} />
+      ) : dataAllMovies.length > 0 && hide ? (
+        <Summry data={searchMovies.data} />
+      ) : (
+        <Spinner color='danger' />
+      )}
+
       {!hide && (
         <Fragment>
           <MovieSection
@@ -70,7 +99,9 @@ const HomePage = () => {
           />
         </Fragment>
       )}
+
       {hide && <ResultSearchMovies data={searchMovies} />}
+
       <Footer />
     </Fragment>
   );

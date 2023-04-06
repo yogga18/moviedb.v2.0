@@ -29,8 +29,10 @@ const Profile = () => {
           )}
         </Col>
         <Col md={9}>
-          <div className='mt-2'>
-            <h5>{user.email}</h5>
+          <div className='mt-2 profile-desc'>
+            <p>
+              <b>{user.email}</b>
+            </p>
             {user.emailVerified ? (
               <Badge color='success'>Verified</Badge>
             ) : (
