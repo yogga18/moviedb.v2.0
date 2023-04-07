@@ -11,6 +11,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  CREATE_USER_ROLE_REQUEST,
+  CREATE_USER_ROLE_SUCCESS,
+  CREATE_USER_ROLE_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -18,6 +21,7 @@ const initialState = {
     isLoading: false,
     data: [],
     error: null,
+    isLogin: false,
   },
   regisWithGoogle: {
     isLoading: false,
@@ -36,6 +40,12 @@ const initialState = {
     data: [],
     error: null,
   },
+  userRole: {
+    isLoading: false,
+    data: [],
+    error: null,
+    isLogin: false,
+  },
 };
 
 const regisWithEmailReducer = (state = initialState, action) => {
@@ -48,6 +58,7 @@ const regisWithEmailReducer = (state = initialState, action) => {
           isLoading: true,
           data: [],
           error: null,
+          isLogin: false,
         },
       });
 
@@ -59,6 +70,7 @@ const regisWithEmailReducer = (state = initialState, action) => {
           isLoading: false,
           data: action.payload.data ?? [],
           error: null,
+          isLogin: false,
         },
       });
 
@@ -70,6 +82,7 @@ const regisWithEmailReducer = (state = initialState, action) => {
           isLoading: false,
           data: [],
           error: action.payload.error,
+          isLogin: false,
         },
       });
 
@@ -175,6 +188,42 @@ const regisWithEmailReducer = (state = initialState, action) => {
           isLogout: false,
           data: [],
           error: action.payload.error,
+        },
+      });
+
+    case CREATE_USER_ROLE_REQUEST:
+      return (state = {
+        ...state,
+        userRole: {
+          ...state.userRole,
+          isLoading: true,
+          data: [],
+          error: null,
+          isLogin: false,
+        },
+      });
+
+    case CREATE_USER_ROLE_SUCCESS:
+      return (state = {
+        ...state,
+        userRole: {
+          ...state.userRole,
+          isLoading: false,
+          data: action.payload.data ?? [],
+          error: null,
+          isLogin: false,
+        },
+      });
+
+    case CREATE_USER_ROLE_FAILURE:
+      return (state = {
+        ...state,
+        userRole: {
+          ...state.userRole,
+          isLoading: false,
+          data: [],
+          error: action.payload.error,
+          isLogin: false,
         },
       });
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'reactstrap';
 import SideMenus from '../../Components/SideMenus';
@@ -25,6 +25,8 @@ const Dashboard = () => {
     setHide(hide);
     dispatch(searchMovie(query));
   };
+
+  useEffect(() => {}, []);
 
   return (
     <Fragment>
