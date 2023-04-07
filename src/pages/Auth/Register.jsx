@@ -16,7 +16,7 @@ import {
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerWithEmail } from '../../store/actions';
+import { registerWithEmail, createUserRole } from '../../store/actions';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,9 @@ const Register = () => {
   const [password1, setPassword1] = useState(true);
   const [password2, setPassword2] = useState(true);
 
-  const { regisWithEmail } = useSelector((state) => state.AuthReducer);
+  const { regisWithEmail, userRole } = useSelector(
+    (state) => state.AuthReducer
+  );
 
   const showPassword1 = () => {
     setPassword1(!password1);
@@ -37,13 +39,32 @@ const Register = () => {
     setPassword2(!password2);
   };
 
-  const handleRegisterSubmit = (payload) => {
+  const handleRegisterSubmit = async (payload) => {
     dispatch(registerWithEmail(payload)).then((response) => {
       if (response.success) {
-        toast.success('Register Success');
-        navigate('/login');
+        postFireStore(response.data);
+        localStorage.setItem('isRegis', true);
       } else {
         toast.warning(response.error.message);
+      }
+    });
+  };
+
+  const postFireStore = async (response) => {
+    const payload = {
+      email: response.user.email,
+      role: 'user',
+      uuid: response.user.uid,
+    };
+
+    dispatch(createUserRole(payload)).then((response) => {
+      if (response.success) {
+        toast.success('Register Success');
+        // create data in localStorage for flag isRegis = true
+        localStorage.setItem('isRegis', true);
+        navigate('/login');
+      } else {
+        toast.error(response.error.message);
       }
     });
   };

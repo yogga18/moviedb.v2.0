@@ -16,56 +16,49 @@ import HomePage from './pages/Home';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+  let isRegis = localStorage.getItem('isRegis');
+  let logIn = localStorage.getItem('isLogin');
 
   useEffect(() => {
-    const auth = getAuth();
+    if (isRegis && logIn) {
+      const auth = getAuth();
 
-    onAuthStateChanged(auth, (result) => {
-      if (result) {
-        setIsLogin(true);
-        localStorage.setItem('isLogin', JSON.stringify(true));
-      } else {
-        setIsLogin(false);
-        localStorage.setItem('isLogin', JSON.stringify(false));
-      }
-    });
+      onAuthStateChanged(auth, (result) => {
+        if (result) {
+          setIsLogin(true);
+          localStorage.setItem('isLogin', true);
+        } else {
+          setIsLogin(false);
+          localStorage.setItem('isLogin', false);
+        }
+      });
+    }
   }, []);
 
   return (
-    <>
-      {isLogin ? (
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path='/' element={<HomePage />} />
-            <Route path='*' element={<NotFound />} />
-            <Route path='/about' element={<AboutPage />} />
-            <Route path='/genres' element={<Genres />} />
-            <Route path='/genres/:id' element={<GendreDetail />} />
-            <Route path='/detail-movie/:id' element={<DetailMovies />} />
-            {/* Protected Routes */}
+    <Router>
+      <Routes>
+        {/* Public Routes */}
+        <Route path='/' element={<HomePage />} />
+        <Route path='/about' element={<AboutPage />} />
+        <Route path='/genres' element={<Genres />} />
+        <Route path='/genres/:id' element={<GendreDetail />} />
+        <Route path='/detail-movie/:id' element={<DetailMovies />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
+        {/* Protected Routes */}
+        {isLogin ? (
+          <>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/profile' element={<DetailProfile />} />
             <Route path='/movie-charts' element={<MovieChart />} />
             <Route path='/forum' element={<Forum />} />
-          </Routes>
-        </Router>
-      ) : (
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path='/' element={<HomePage />} />
-            <Route path='*' element={<NotFound />} />
-            <Route path='/about' element={<AboutPage />} />
-            <Route path='/genres' element={<Genres />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/genres/:id' element={<GendreDetail />} />
-            <Route path='/detail-movie/:id' element={<DetailMovies />} />
-          </Routes>
-        </Router>
-      )}
-    </>
+          </>
+        ) : null}
+        {/* 404 Not Found Route */}
+        <Route path='*' element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 

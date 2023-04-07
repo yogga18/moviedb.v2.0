@@ -6,6 +6,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from '@firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+
 import {
   REGISTER_WITH_EMAIL_REQUEST,
   REGISTER_WITH_EMAIL_SUCCESS,
@@ -19,6 +22,9 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
+  CREATE_USER_ROLE_REQUEST,
+  CREATE_USER_ROLE_SUCCESS,
+  CREATE_USER_ROLE_FAILURE,
 } from './actionTypes';
 
 export const registerWithEmail = (payload) => {
@@ -189,6 +195,46 @@ export const justLogout = () => {
 
       // custom response karena server tidak mengembalikan response failure
       return { success: false, error, isLogin: true };
+    }
+  };
+};
+
+export const createUserRole = (payload) => {
+  console.log('createUserRole', payload);
+  return async (dispatch) => {
+    dispatch({
+      type: CREATE_USER_ROLE_REQUEST,
+      payload: {
+        isLoading: true,
+        data: [],
+        error: null,
+      },
+    });
+
+    try {
+      const res = await addDoc(collection(db, 'users'), payload);
+
+      dispatch({
+        type: CREATE_USER_ROLE_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: res,
+          error: null,
+        },
+      });
+
+      return { success: true, data: res };
+    } catch (error) {
+      dispatch({
+        type: CREATE_USER_ROLE_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          error: error.message,
+        },
+      });
+
+      return { success: false, error };
     }
   };
 };

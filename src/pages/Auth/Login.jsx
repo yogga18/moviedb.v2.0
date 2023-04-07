@@ -30,8 +30,6 @@ const Login = () => {
 
   const { login } = useSelector((state) => state.AuthReducer);
 
-  console.log('login', login);
-
   const showPassword1 = () => {
     setPassword1(!password1);
   };
@@ -43,7 +41,6 @@ const Login = () => {
     };
 
     dispatch(loginWithEmail(payload)).then((response) => {
-      // console.log('response', response);
       if (response.success) {
         let user = {
           email: response.data.user.email,
@@ -57,6 +54,17 @@ const Login = () => {
         const encryptedToken = utilities.encLocalStrg(user);
 
         localStorage.setItem('user', encryptedToken);
+        localStorage.setItem('isRegis', true);
+        localStorage.setItem('isLogin', true);
+
+        // Check role
+        // get user by uid from firebase firestore and check role if user redirect to user Dashboard else redirect to admin Dashboard
+
+        // if(){
+
+        // }else{
+
+        // }
 
         navigate('/dashboard');
       } else {
@@ -80,6 +88,16 @@ const Login = () => {
         const encryptedToken = utilities.encLocalStrg(user);
 
         localStorage.setItem('user', encryptedToken);
+        localStorage.setItem('isRegis', true);
+        localStorage.setItem('isLogin', true);
+
+        // Check role
+        // get user by uid from firebase firestore and check role if user redirect to user Dashboard else redirect to admin Dashboard
+        // if(){
+
+        // }else{
+
+        // }
 
         navigate('/dashboard');
       } else {

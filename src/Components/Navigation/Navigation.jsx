@@ -40,7 +40,8 @@ const Navigation = () => {
     dispatch(justLogout());
 
     localStorage.removeItem('user');
-    localStorage.setItem('isLogin', JSON.stringify(false));
+    localStorage.setItem('isRegis', false);
+    localStorage.setItem('isLogin', false);
 
     if (path !== '/') {
       navigate('/');
