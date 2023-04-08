@@ -14,6 +14,7 @@ export default {
   },
 
   decLocalStrg(data) {
+    if (!data) return null; // tambahkan kondisi untuk menangani nilai kosong
     const bytes = CryptoJS.AES.decrypt(data, SECRET_KEY);
     const user = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 

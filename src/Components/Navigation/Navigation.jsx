@@ -20,6 +20,7 @@ import DarkMode from '../Darkmode';
 import './Navigation.scss';
 import OffcanvasComponent from './Sidebar/OffcanvasComponent';
 import PropTypes from 'prop-types';
+import utilities from '../../helpers/utilities';
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Navigation = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [flagLogin, setFlagLogin] = useState(false);
+  const [user, setUser] = useState({});
 
   const { logout } = useSelector((state) => state.AuthReducer);
 
@@ -52,6 +54,10 @@ const Navigation = () => {
 
   useEffect(() => {
     setFlagLogin(JSON.parse(localStorage.getItem('isLogin')));
+
+    const userLocalStorage = localStorage.getItem('user');
+    const userLclStrg = utilities.decLocalStrg(userLocalStorage);
+    setUser(userLclStrg);
   }, []);
 
   return (
@@ -94,7 +100,10 @@ const Navigation = () => {
         {flagLogin ? (
           <div className='d-flex justify-content-center align-items-center me-2 ms-0'>
             <NavItem className='navitemside'>
-              <NavLink href='/dashboard' className='navlinkitemside'>
+              <NavLink
+                href={user.role === 'admin' ? '/dashboard-admin' : '/dashboard'}
+                className='navlinkitemside'
+              >
                 <b className='text-white'>Dashboard</b>
               </NavLink>
             </NavItem>
@@ -157,7 +166,12 @@ const Navigation = () => {
           {flagLogin ? (
             <Fragment>
               <NavItem className='navitemside'>
-                <NavLink href='/dashboard' className='navlinkitemside'>
+                <NavLink
+                  href={
+                    user.role === 'admin' ? '/dashboard-admin' : '/dashboard'
+                  }
+                  className='navlinkitemside'
+                >
                   <b className='text-white'>Dashboard</b>
                 </NavLink>
               </NavItem>

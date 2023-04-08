@@ -17,7 +17,11 @@ import {
 import Navigation from '../../Components/Navigation/Navigation';
 import './Auth.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginWithEmail, registerWithGoogle } from '../../store/actions';
+import {
+  loginWithEmail,
+  // registerWithGoogle,
+  getRoleUser,
+} from '../../store/actions';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import utilities from '../../helpers/utilities';
@@ -34,7 +38,7 @@ const Login = () => {
     setPassword1(!password1);
   };
 
-  const save = (values) => {
+  const handleEmailLogin = (values) => {
     const payload = {
       email: values.email,
       password: values.password,
@@ -42,31 +46,7 @@ const Login = () => {
 
     dispatch(loginWithEmail(payload)).then((response) => {
       if (response.success) {
-        let user = {
-          email: response.data.user.email,
-          emailVerified: response.data.user.emailVerified,
-          refreshToken: response.data.user.refreshToken,
-          accessToken: response.data.user.accessToken,
-          uid: response.data.user.uid,
-          photoURL: response.data.user.photoURL || '',
-        };
-
-        const encryptedToken = utilities.encLocalStrg(user);
-
-        localStorage.setItem('user', encryptedToken);
-        localStorage.setItem('isRegis', true);
-        localStorage.setItem('isLogin', true);
-
-        // Check role
-        // get user by uid from firebase firestore and check role if user redirect to user Dashboard else redirect to admin Dashboard
-
-        // if(){
-
-        // }else{
-
-        // }
-
-        navigate('/dashboard');
+        checkingRole(response.data);
       } else {
         toast.warning(response.error.message);
       }
@@ -74,32 +54,46 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    dispatch(registerWithGoogle()).then((response) => {
-      if (response.success) {
-        let user = {
-          email: response.data.user.email,
-          emailVerified: response.data.user.emailVerified,
-          refreshToken: response.data.user.refreshToken,
-          accessToken: response.data.user.accessToken,
-          uid: response.data.user.uid,
-          photoURL: response.data.user.photoURL || '',
-        };
+    toast.info('We Found Bug in this feature 😢, please use email for login');
+    // dispatch(registerWithGoogle()).then((response) => {
+    //   if (response.success) {
+    //     let user = {
+    //       email: response.data.user.email,
+    //       emailVerified: response.data.user.emailVerified,
+    //       refreshToken: response.data.user.refreshToken,
+    //       accessToken: response.data.user.accessToken,
+    //       uid: response.data.user.uid,
+    //       photoURL: response.data.user.photoURL || '',
+    //       role: 'user',
+    //     };
 
-        const encryptedToken = utilities.encLocalStrg(user);
+    //     const encryptedToken = utilities.encLocalStrg(user);
+
+    //     localStorage.setItem('user', encryptedToken);
+    //     localStorage.setItem('isRegis', true);
+    //     localStorage.setItem('isLogin', true);
+
+    //     navigate('/dashboard');
+    //   } else {
+    //     toast.warning(response.error.message);
+    //   }
+    // });
+  };
+
+  const checkingRole = async (response) => {
+    dispatch(getRoleUser(response.user)).then((response) => {
+      if (response.success) {
+        const encryptedToken = utilities.encLocalStrg(response.data);
 
         localStorage.setItem('user', encryptedToken);
         localStorage.setItem('isRegis', true);
         localStorage.setItem('isLogin', true);
 
-        // Check role
-        // get user by uid from firebase firestore and check role if user redirect to user Dashboard else redirect to admin Dashboard
-        // if(){
-
-        // }else{
-
-        // }
-
-        navigate('/dashboard');
+        if (response.data.role === 'user') {
+          navigate('/dashboard');
+        } else {
+          navigate('/dashboard-admin');
+        }
       } else {
         toast.warning(response.error.message);
       }
@@ -120,7 +114,7 @@ const Login = () => {
         .min(8, 'Password must be at least 8 characters'),
     }),
     // 3. Submit handler
-    onSubmit: save,
+    onSubmit: handleEmailLogin,
   });
 
   return (
@@ -184,20 +178,21 @@ const Login = () => {
                     ) : null}
                   </FormGroup>
 
-                  <div className='mt-2 d-flex gap-3'>
-                    <Button
-                      type='submit'
-                      color='primary'
-                      disabled={login.isLoading}
-                    >
-                      {login.isLoading ? <Spinner color='light' /> : 'Login'}
-                    </Button>
+                  <div className='mt-5 d-flex gap-3 justify-content-end'>
                     <Button
                       color='danger'
                       onClick={handleGoogleLogin}
                       disabled={login.isLoading}
                     >
                       {login.isLoading ? <Spinner color='light' /> : 'Google'}
+                    </Button>
+                    <Button
+                      type='submit'
+                      color='primary'
+                      disabled={login.isLoading}
+                      className='px-3'
+                    >
+                      {login.isLoading ? <Spinner color='light' /> : 'Login'}
                     </Button>
                   </div>
                 </form>

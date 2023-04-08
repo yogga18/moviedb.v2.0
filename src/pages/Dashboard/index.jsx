@@ -8,10 +8,16 @@ import SearchMovie from '../../Components/Movie/SearchMovie';
 import { searchMovie } from '../../store/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import MovieCard from '../../Components/Movie/MovieCard';
+import utilities from '../../helpers/utilities';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const encryptedUser = localStorage.getItem('user');
+  const bytes = utilities.decLocalStrg(encryptedUser);
+
+  console.log('bytes', bytes);
 
   const [hide, setHide] = useState(false);
 
@@ -57,6 +63,7 @@ const Dashboard = () => {
           {hide && <MovieCard movies={searchMovies} />}
         </Row>
       </Container>
+      <h1 className='text-center'>User Dashboard</h1>
     </Fragment>
   );
 };

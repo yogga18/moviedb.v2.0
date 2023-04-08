@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from '@firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs, where, query } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 import {
@@ -25,6 +25,9 @@ import {
   CREATE_USER_ROLE_REQUEST,
   CREATE_USER_ROLE_SUCCESS,
   CREATE_USER_ROLE_FAILURE,
+  GET_USER_ROLE_REQUEST,
+  GET_USER_ROLE_SUCCESS,
+  GET_USER_ROLE_FAILURE,
 } from './actionTypes';
 
 export const registerWithEmail = (payload) => {
@@ -200,7 +203,6 @@ export const justLogout = () => {
 };
 
 export const createUserRole = (payload) => {
-  console.log('createUserRole', payload);
   return async (dispatch) => {
     dispatch({
       type: CREATE_USER_ROLE_REQUEST,
@@ -235,6 +237,68 @@ export const createUserRole = (payload) => {
       });
 
       return { success: false, error };
+    }
+  };
+};
+
+export const getRoleUser = (payload) => {
+  let dataFireStore;
+
+  return async (dispatch) => {
+    dispatch({
+      type: GET_USER_ROLE_REQUEST,
+      payload: {
+        isLoading: true,
+        data: [],
+        isLogin: false,
+        error: null,
+      },
+    });
+
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('uuid', '==', payload.uid)); // query getData by uuid
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0]; // getFirst data and popup array -> object
+        const userData = { id: userDoc.id, ...userDoc.data() }; // get data from object and add id from document id in firestore database
+        dataFireStore = userData;
+      }
+
+      let user = {
+        email: payload.email,
+        emailVerified: payload.emailVerified,
+        refreshToken: payload.refreshToken,
+        accessToken: payload.accessToken,
+        uid: payload.uid,
+        photoURL: payload.photoURL,
+        role: dataFireStore.role,
+        idDocFireStore: dataFireStore.id,
+      };
+
+      dispatch({
+        type: GET_USER_ROLE_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: user,
+          isLogin: true,
+          error: null,
+        },
+      });
+
+      return { success: true, data: user, isLogin: true };
+    } catch (error) {
+      dispatch({
+        type: GET_USER_ROLE_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          isLogin: false,
+          error: error.message,
+        },
+      });
+
+      return { success: false, error, isLogin: false };
     }
   };
 };

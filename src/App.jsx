@@ -1,39 +1,49 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Spinner } from 'reactstrap';
 import DetailMovies from './Components/Movie/DetailMovies';
 import DetailProfile from './Components/Profile/DetailProfile';
 import Forum from './Components/SideMenus/Forum';
 import MovieChart from './Components/SideMenus/MovieChart';
+import utilities from './helpers/utilities';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard';
+import DashboardAdmin from './pages/Dashboard/DashboardAdmin';
 import Genres from './pages/Genres';
 import GendreDetail from './pages/Genres/GendreDetail';
 import HomePage from './pages/Home';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
-  let isRegis = localStorage.getItem('isRegis');
-  let logIn = localStorage.getItem('isLogin');
+  const [user, setUser] = useState({});
+  const [userRole, setUserRole] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (isRegis && logIn) {
-      const auth = getAuth();
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (result) => {
+      setIsLoading(false); // set loading state to false when authentication finishes
+      if (result) {
+        setIsLogin(true);
+        const encryptedUser = localStorage.getItem('user');
+        const user = utilities.decLocalStrg(encryptedUser);
+        setUser(user);
+        setUserRole(user?.role);
+      } else {
+        setIsLogin(false);
+      }
+    });
 
-      onAuthStateChanged(auth, (result) => {
-        if (result) {
-          setIsLogin(true);
-          localStorage.setItem('isLogin', true);
-        } else {
-          setIsLogin(false);
-          localStorage.setItem('isLogin', false);
-        }
-      });
-    }
+    return unsubscribe;
   }, []);
+
+  if (isLoading) {
+    return <Spinner color='danger' className='m-auto' />; // display loading spinner or message
+  }
 
   return (
     <Router>
@@ -47,7 +57,10 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         {/* Protected Routes */}
-        {isLogin ? (
+
+        {isLogin && userRole === 'admin' ? (
+          <Route path='/dashboard-admin' element={<DashboardAdmin />} />
+        ) : isLogin && userRole === 'user' ? (
           <>
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/profile' element={<DetailProfile />} />
@@ -55,6 +68,7 @@ function App() {
             <Route path='/forum' element={<Forum />} />
           </>
         ) : null}
+
         {/* 404 Not Found Route */}
         <Route path='*' element={<NotFound />} />
       </Routes>

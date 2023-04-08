@@ -60,7 +60,6 @@ const Register = () => {
     dispatch(createUserRole(payload)).then((response) => {
       if (response.success) {
         toast.success('Register Success');
-        // create data in localStorage for flag isRegis = true
         localStorage.setItem('isRegis', true);
         navigate('/login');
       } else {

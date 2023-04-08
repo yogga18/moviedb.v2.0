@@ -14,6 +14,9 @@ import {
   CREATE_USER_ROLE_REQUEST,
   CREATE_USER_ROLE_SUCCESS,
   CREATE_USER_ROLE_FAILURE,
+  GET_USER_ROLE_REQUEST,
+  GET_USER_ROLE_SUCCESS,
+  GET_USER_ROLE_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -41,6 +44,12 @@ const initialState = {
     error: null,
   },
   userRole: {
+    isLoading: false,
+    data: [],
+    error: null,
+    isLogin: false,
+  },
+  getUserRole: {
     isLoading: false,
     data: [],
     error: null,
@@ -220,6 +229,42 @@ const regisWithEmailReducer = (state = initialState, action) => {
         ...state,
         userRole: {
           ...state.userRole,
+          isLoading: false,
+          data: [],
+          error: action.payload.error,
+          isLogin: false,
+        },
+      });
+
+    case GET_USER_ROLE_REQUEST:
+      return (state = {
+        ...state,
+        getUserRole: {
+          ...state.getUserRole,
+          isLoading: true,
+          data: [],
+          error: null,
+          isLogin: false,
+        },
+      });
+
+    case GET_USER_ROLE_SUCCESS:
+      return (state = {
+        ...state,
+        getUserRole: {
+          ...state.getUserRole,
+          isLoading: false,
+          data: action.payload.data ?? [],
+          error: null,
+          isLogin: false,
+        },
+      });
+
+    case GET_USER_ROLE_FAILURE:
+      return (state = {
+        ...state,
+        getUserRole: {
+          ...state.getUserRole,
           isLoading: false,
           data: [],
           error: action.payload.error,

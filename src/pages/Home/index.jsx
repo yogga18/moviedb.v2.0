@@ -59,8 +59,6 @@ const HomePage = () => {
     }
   }, [hide]);
 
-  console.log('searchMovies', searchMovies);
-
   return (
     <Fragment>
       <Navigation />
