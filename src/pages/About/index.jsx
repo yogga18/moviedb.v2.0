@@ -12,10 +12,10 @@ const AboutPage = () => {
         </h5>
         <p className='text-center mt-5'>User Testing</p>
         <p className='text-center'>
-          Email : <b>aditya@gmail.com</b>
+          Email : <b>candra@gmail.com</b>
         </p>
         <p className='text-center'>
-          Password :<b> Aditya##12</b>
+          Password :<b> Candra##12</b>
         </p>
       </Container>
     </Fragment>
