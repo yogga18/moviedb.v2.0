@@ -10,9 +10,8 @@ const Profile = () => {
   const getLocalStrg = () => {
     const encryptedUser = localStorage.getItem('user');
     const bytes = utilities.decLocalStrg(encryptedUser);
-    // const user = JSON.parse(bytes);
 
-    setUser(user);
+    setUser(bytes);
   };
 
   useEffect(() => {

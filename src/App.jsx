@@ -4,7 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
 import DetailMovies from './Components/Movie/DetailMovies';
 import DetailProfile from './Components/Profile/DetailProfile';
+import BugReport from './Components/SideMenus/BugReport';
 import Forum from './Components/SideMenus/Forum';
+import Message from './Components/SideMenus/Message';
 import MovieChart from './Components/SideMenus/MovieChart';
 import utilities from './helpers/utilities';
 import NotFound from './pages/404';
@@ -66,6 +68,8 @@ function App() {
             <Route path='/profile' element={<DetailProfile />} />
             <Route path='/movie-charts' element={<MovieChart />} />
             <Route path='/forum' element={<Forum />} />
+            <Route path='/bug-report' element={<BugReport />} />
+            <Route path='/messages' element={<Message />} />
           </>
         ) : null}
 

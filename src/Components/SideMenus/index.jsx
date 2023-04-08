@@ -18,6 +18,7 @@ const SideMenus = () => {
           onClick={() => {
             navigateTo('/movie-charts');
           }}
+          title='Your Movie Charts'
         >
           <i className='bi bi-cart-plus' />
         </Button>
@@ -27,8 +28,29 @@ const SideMenus = () => {
           onClick={() => {
             navigateTo('/forum');
           }}
+          title="Let's discuss"
         >
           <i className='bi bi-chat-right-dots' />
+        </Button>
+        <Button
+          outline
+          color='primary'
+          title='You can report Bug'
+          onClick={() => {
+            navigateTo('/bug-report');
+          }}
+        >
+          <i class='bi bi-megaphone' />
+        </Button>
+        <Button
+          outline
+          color='primary'
+          title='Notifications'
+          onClick={() => {
+            navigateTo('/messages');
+          }}
+        >
+          <i class='bi bi-bell'></i>
         </Button>
       </div>
     </Fragment>

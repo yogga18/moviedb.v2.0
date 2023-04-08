@@ -3,6 +3,7 @@ import { getAnalytics } from 'firebase/analytics'; // for analytics tracking
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'; // for authentication
 import { getDatabase } from 'firebase/database'; // for realtime database
 import { getFirestore } from 'firebase/firestore'; // for cloud firestore
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCnfwEemkYrsxdLybUqPiRHm0M-SMEK2gU',
@@ -16,6 +17,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+export const storage = getStorage(app);
 export const db = getFirestore(app);
 export const database = getDatabase(app);
 export const auth = getAuth(app);
