@@ -11,6 +11,7 @@ import MovieChart from './Components/SideMenus/MovieChart';
 import utilities from './helpers/utilities';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
+import ReportingBug from './pages/Admin/ReportingBug';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Dashboard from './pages/Dashboard';
@@ -61,7 +62,10 @@ function App() {
         {/* Protected Routes */}
 
         {isLogin && userRole === 'admin' ? (
-          <Route path='/dashboard-admin' element={<DashboardAdmin />} />
+          <>
+            <Route path='/dashboard-admin' element={<DashboardAdmin />} />
+            <Route path='/reporting-bug' element={<ReportingBug />} />
+          </>
         ) : isLogin && userRole === 'user' ? (
           <>
             <Route path='/dashboard' element={<Dashboard />} />

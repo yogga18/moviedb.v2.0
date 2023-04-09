@@ -1,75 +1,40 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Nav,
-  NavItem,
-  Offcanvas,
-  OffcanvasBody,
-  OffcanvasHeader,
-} from 'reactstrap';
-import DarkMode from '../../Darkmode';
+
+import { Button, Offcanvas, OffcanvasBody, OffcanvasHeader } from 'reactstrap';
 import '../Navigation.scss';
+import MenuOffCanvas from './MenuOffCanvas';
 
 const OffcanvasComponent = () => {
+  const theme = localStorage.getItem('theme');
+
   const [isOpen, setIsOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleOffcanvas = () => {
     setIsOpen(!isOpen);
   };
 
-  const toggle = () => setDropdownOpen(!dropdownOpen);
-
   return (
     <>
-      <Button color='primary' onClick={toggleOffcanvas}>
-        Open Offcanvas
+      <Button
+        color='primary'
+        onClick={toggleOffcanvas}
+        outline
+        title='expand menu'
+        style={{
+          position: 'fixed',
+        }}
+      >
+        <i className='bi bi-arrows-angle-expand' />
       </Button>
-      <Offcanvas isOpen={isOpen} toggle={toggleOffcanvas}>
-        <OffcanvasHeader closeButton>
-          {/* <h5 className='text-dark'>Offcanvas Header</h5> */}
-        </OffcanvasHeader>
+      <Offcanvas isOpen={isOpen} toggle={toggleOffcanvas} scrollable>
+        <OffcanvasHeader
+          toggle={function toggleOffcanvas() {}}
+          onClick={toggleOffcanvas}
+        ></OffcanvasHeader>
         <OffcanvasBody>
-          <Nav navbar>
-            <NavItem>
-              <NavLink href='/genres'>
-                <b className='text-white'>Genres</b>
-              </NavLink>
-            </NavItem>
-            <NavItem className='navitemside'>
-              <NavLink href='/about' className='navlinkitemside'>
-                <b className='text-white'>About</b>
-              </NavLink>
-            </NavItem>
-            <Dropdown nav isOpen={dropdownOpen} toggle={toggle}>
-              <DropdownToggle nav caret>
-                <b className='text-white'>Login</b>
-              </DropdownToggle>
-              <DropdownMenu>
-                <DropdownItem>
-                  <Link className='text-decoration-none text-dark'>
-                    <b>Login</b>
-                  </Link>
-                </DropdownItem>
-                <DropdownItem>
-                  <Link
-                    className='text-decoration-none text-dark'
-                    to='/register'
-                  >
-                    <b>Sign Up</b>
-                  </Link>
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-            <NavItem className='pt-2'>
-              <DarkMode />
-            </NavItem>
-          </Nav>
+          <div>
+            <MenuOffCanvas path={'/reporting-bug'} />
+          </div>
         </OffcanvasBody>
       </Offcanvas>
     </>

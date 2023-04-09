@@ -22,3 +22,17 @@ $medium-screen: 768px;
     }
   }
 }
+
+// Menu Off Canvas
+.menu-offcanvas-wrapper {
+  cursor: pointer;
+
+  .menu-offcanvas-text {
+    color: #1a1818;
+
+    &:hover {
+      transition: 0.3s ease-in-out;
+      color: #c1c5ce;
+    }
+  }
+}
