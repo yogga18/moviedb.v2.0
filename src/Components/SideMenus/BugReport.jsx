@@ -16,8 +16,9 @@ import utilities from '../../helpers/utilities';
 import { serverTimestamp } from 'firebase/firestore';
 import { storage } from '../../config/firebase';
 import { getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postBugReports } from '../../store/actions';
+import { toast } from 'react-toastify';
 
 const BugReport = () => {
   // Aditional Variable
@@ -25,25 +26,78 @@ const BugReport = () => {
   const encUserLocalStrg = localStorage.getItem('user');
   const user = utilities.decLocalStrg(encUserLocalStrg);
 
-  console.log(user);
-
   // State
   const [image, setImage] = useState();
-  const [dataImage, setDataimage] = useState();
   const [fileUpload, setFileUpload] = useState();
 
+  // Redux Store
+  const { postBugReportsReducer } = useSelector((state) => state.BugReducer);
+
   // Func
-  const handlerSubmit = (values) => {
+  const handlerSubmit = async (values) => {
+    let resImageFromServer;
+
+    const name = new Date().getTime() + image.name;
+    const storageRef = ref(storage, image.name);
+    const uploadTask = uploadBytesResumable(storageRef, image);
+
+    await new Promise((resolve, reject) => {
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setFileUpload(progress);
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+
+            case 'running':
+              console.log('Upload is running');
+              break;
+
+            default:
+              brake;
+          }
+        },
+        (error) => {
+          console.log(error);
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+              resImageFromServer = downloadURL;
+              resolve();
+            })
+            .catch((error) => {
+              toast.warning(error.message);
+              reject(error);
+            });
+        }
+      );
+    });
+
     const payload = {
       uuid: user.uid,
       title: values.title,
       description: values.description,
       timeStamp: serverTimestamp(),
-      image: dataImage,
+      image: resImageFromServer,
+      status: 'pending',
     };
 
-    console.log('payload', payload);
-    dispatch(postBugReports(payload));
+    dispatch(postBugReports(payload)).then((response) => {
+      if (response.success) {
+        toast.success('Your report has been sent successfully');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        toast.warning('Something went wrong, please try again later');
+      }
+    });
   };
 
   const formik = useFormik({
@@ -65,43 +119,6 @@ const BugReport = () => {
 
     onSubmit: handlerSubmit,
   });
-
-  // Cycle
-  useEffect(() => {
-    const uploadImage = () => {
-      const name = new Date().getTime() + image.name;
-      const storageRef = ref(storage, image.name);
-      const uploadTask = uploadBytesResumable(storageRef, image);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setFileUpload(progress);
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-            default:
-              brake;
-          }
-        },
-        (error) => {
-          console.log(error);
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            setDataimage(downloadURL);
-          });
-        }
-      );
-    };
-    image && uploadImage();
-  }, [image]);
 
   return (
     <Fragment>
@@ -160,6 +177,7 @@ const BugReport = () => {
                       onChange={(e) => {
                         setImage(e.target.files[0]);
                       }}
+                      required
                     />
                   </FormGroup>
                 </Col>
@@ -189,7 +207,10 @@ const BugReport = () => {
                 <Button
                   type='submit'
                   color='primary'
-                  disabled={fileUpload !== null && fileUpload < 100}
+                  disabled={
+                    (fileUpload !== null && fileUpload < 100) ||
+                    postBugReportsReducer.isLoading
+                  }
                 >
                   Submit
                 </Button>

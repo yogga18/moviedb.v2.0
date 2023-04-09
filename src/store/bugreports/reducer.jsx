@@ -5,7 +5,7 @@ import {
 } from './actionTypes';
 
 const initialState = {
-  postBugReports: {
+  postBugReportsReducer: {
     isLoading: false,
     data: [],
     error: null,
@@ -17,8 +17,8 @@ const postBugReportsReducer = (state = initialState, action) => {
     case POST_BUG_REPORTS_REQUEST:
       return (state = {
         ...state,
-        postBugReports: {
-          ...state.postBugReports,
+        postBugReportsReducer: {
+          ...state.postBugReportsReducer,
           isLoading: true,
           data: [],
           error: null,
@@ -28,8 +28,8 @@ const postBugReportsReducer = (state = initialState, action) => {
     case POST_BUG_REPORTS_SUCCESS:
       return (state = {
         ...state,
-        postBugReports: {
-          ...state.postBugReports,
+        postBugReportsReducer: {
+          ...state.postBugReportsReducer,
           isLoading: false,
           data: action.payload.data ?? [],
           error: null,
@@ -39,7 +39,7 @@ const postBugReportsReducer = (state = initialState, action) => {
     case POST_BUG_REPORTS_FAILURE:
       return (state = {
         ...state,
-        postBugReports: {
+        postBugReportsReducer: {
           isLoading: false,
           data: [],
           error: action.payload.error,
