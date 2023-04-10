@@ -73,7 +73,7 @@ const ManageUsers = () => {
                     onChange={(e) => {
                       setJudul(e.target.value);
                     }}
-                    placeholder='Search Users'
+                    placeholder='Search Users by Email'
                   />
                 </div>
                 <div>
