@@ -1,24 +1,41 @@
-import React from 'react';
-import { Card, CardBody, CardFooter } from 'reactstrap';
+import React, { Fragment } from 'react';
+import { Badge, Card, CardBody } from 'reactstrap';
 import PropTypes from 'prop-types';
 import './AdminComponents.scss';
 
-const CardManageusers = ({ email, date }) => {
+const CardManageusers = ({ data }) => {
+  const convertDateFirebase = (date) => {
+    return new Date(date.seconds * 1000).toLocaleDateString();
+  };
+
   return (
-    <Card className='card-side-b-wrapper'>
-      <CardBody>
-        <p className='text-dark'>{email}</p>
-      </CardBody>
-      <CardFooter>
-        <p className='text-dark m-0'>{date}</p>
-      </CardFooter>
-    </Card>
+    <Fragment>
+      {data.map((item) => (
+        <Card className='card-side-b-wrapper mb-3' key={item.id_document}>
+          <CardBody>
+            <div className='d-flex justify-content-end'>
+              <p>
+                Join At : <b>{convertDateFirebase(item.joinAt)}</b>
+              </p>
+            </div>
+            <p>
+              Email : <b>{item.email}</b>
+            </p>
+            Role :{' '}
+            <Badge color={item.role === 'user' ? 'primary' : 'warning'}>
+              {item.role}
+            </Badge>
+          </CardBody>
+        </Card>
+      ))}
+    </Fragment>
   );
 };
 
 CardManageusers.PropTypes = {
   email: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
 };
 
 export default CardManageusers;

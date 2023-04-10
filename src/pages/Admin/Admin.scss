@@ -13,10 +13,20 @@ $boxShdw: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     @media (min-width: 769px) {
       margin-bottom: 100px;
     }
+
     .card-side-a-wrapper {
+      position: fixed;
       box-shadow: $boxShdw;
+      width: 28%;
+
+      @media (max-width: 769px) {
+        width: 100%;
+        position: static;
+      }
     }
   }
-}
 
-// 769px and above
+  .side-b-wrapper {
+    color: black;
+  }
+}

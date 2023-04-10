@@ -17,8 +17,6 @@ $boxShdw2: rgba(226, 226, 234, 0.25) 0px 6px 12px -2px,
 }
 
 // Component Card Manage Users
-.side-b-wrapper {
-  .card-side-b-wrapper {
-    box-shadow: $boxShdw;
-  }
+.card-side-b-wrapper {
+  box-shadow: $boxShdw;
 }

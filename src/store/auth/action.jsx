@@ -27,6 +27,9 @@ import {
   GET_USER_ROLE_REQUEST,
   GET_USER_ROLE_SUCCESS,
   GET_USER_ROLE_FAILURE,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
+  GET_ALL_USERS_FAILURE,
 } from './actionTypes';
 
 export const registerWithEmail = (payload) => {
@@ -298,6 +301,51 @@ export const getRoleUser = (payload) => {
       });
 
       return { success: false, error, isLogin: false };
+    }
+  };
+};
+
+export const fetchAllUsers = (payload) => {
+  let resultUsers = [];
+
+  return async (dispatch) => {
+    dispatch({
+      type: GET_ALL_USERS_REQUEST,
+      payload: {
+        isLoading: true,
+        data: [],
+        error: null,
+      },
+    });
+
+    try {
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      querySnapshot.forEach((doc) => {
+        const res = {
+          id_document: doc.id,
+          ...doc.data(),
+        };
+
+        resultUsers.push(res);
+      });
+
+      dispatch({
+        type: GET_ALL_USERS_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: resultUsers,
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_USERS_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          error: error.message,
+        },
+      });
     }
   };
 };

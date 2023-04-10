@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
   Card,
@@ -9,18 +10,46 @@ import {
   Container,
   Input,
   Row,
+  Spinner,
 } from 'reactstrap';
 import CardManageusers from '../../Components/Admin/CardManageusers';
 import Navigation from '../../Components/Navigation/Navigation';
+import { fetchAllUsers } from '../../store/actions';
+import './Admin.scss';
 
 const ManageUsers = () => {
+  const dispatch = useDispatch();
+
   const [judul, setJudul] = useState('');
   const [sotBy, setSortBy] = useState('');
+  const [flagSearch, setFlagSearch] = useState(true);
+  const [userSearch, setUserSearch] = useState([]);
+
+  const { getAllUsers } = useSelector((state) => state.AuthReducer);
 
   const handleSearch = () => {
     console.log('judul', judul);
     console.log('sotBy', sotBy);
+
+    const filterUsers = getAllUsers.data
+      .filter((item) => {
+        return item.email.toLowerCase().includes(judul.toLowerCase());
+      })
+      .sort((a, b) => {
+        if (sotBy === 'asc') {
+          return a.email.localeCompare(b.email);
+        } else if (sotBy === 'desc') {
+          return b.email.localeCompare(a.email);
+        }
+      });
+
+    setUserSearch(filterUsers);
+    setFlagSearch(!flagSearch);
   };
+
+  useEffect(() => {
+    dispatch(fetchAllUsers());
+  }, []);
 
   return (
     <Fragment>
@@ -50,16 +79,13 @@ const ManageUsers = () => {
                 <div>
                   <select
                     className='form-control'
-                    defaultValue=''
+                    defaultValue='desc'
                     onChange={(e) => {
                       setSortBy(e.target.value);
                     }}
                   >
-                    <option value={''} disabled>
-                      Sort By
-                    </option>
-                    <option value={'dec'}>Admin</option>
-                    <option value={'asc'}>Member</option>
+                    <option value={'desc'}>Desc</option>
+                    <option value={'asc'}>Asc</option>
                   </select>
                 </div>
               </CardBody>
@@ -76,10 +102,14 @@ const ManageUsers = () => {
             </Card>
           </Col>
           <Col md={8} className='side-b-wrapper'>
-            <CardManageusers
-              email={'Exanple@email.com'}
-              date={'01 Januari 2001'}
-            />
+            {getAllUsers.isLoading && <Spinner color='primary' />}
+            {flagSearch ? (
+              <CardManageusers data={getAllUsers.data} />
+            ) : !flagSearch && userSearch.length === 0 ? (
+              <p>Data Tidak Ditemukan</p>
+            ) : (
+              <CardManageusers data={userSearch} />
+            )}
           </Col>
         </Row>
       </Container>
