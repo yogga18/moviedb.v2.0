@@ -26,14 +26,30 @@ const OffcanvasComponent = () => {
       >
         <i className='bi bi-arrows-angle-expand' />
       </Button>
-      <Offcanvas isOpen={isOpen} toggle={toggleOffcanvas} scrollable>
+      <Offcanvas
+        // animation={'false'}
+        isOpen={isOpen}
+        toggle={toggleOffcanvas}
+        scrollable
+      >
         <OffcanvasHeader
           toggle={function toggleOffcanvas() {}}
           onClick={toggleOffcanvas}
         ></OffcanvasHeader>
         <OffcanvasBody>
           <div>
-            <MenuOffCanvas path={'/reporting-bug'} />
+            <MenuOffCanvas
+              path={'/reporting-bug'}
+              title={'BUG 🪲'}
+              sugestion={'Manage Complaint'}
+            />
+          </div>
+          <div>
+            <MenuOffCanvas
+              path={'/manage-users'}
+              title={'Users 🧍‍♀️🧍‍♂️'}
+              sugestion={'Manage Users'}
+            />
           </div>
         </OffcanvasBody>
       </Offcanvas>

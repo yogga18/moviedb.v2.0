@@ -1,3 +1,22 @@
+// variable
+$boxShdw: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+// Bug Report Page
 .reporting-bug-page-wrapper {
   overflow: hidden;
 }
+
+// Manage Users Page
+.manage-user-page-wrapper {
+  overflow: hidden;
+  .side-a-wrapper {
+    @media (min-width: 769px) {
+      margin-bottom: 100px;
+    }
+    .card-side-a-wrapper {
+      box-shadow: $boxShdw;
+    }
+  }
+}
+
+// 769px and above

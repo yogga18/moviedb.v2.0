@@ -2,6 +2,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Spinner } from 'reactstrap';
+import EditReportingBug from './Components/Admin/EditReportingBug';
 import DetailMovies from './Components/Movie/DetailMovies';
 import DetailProfile from './Components/Profile/DetailProfile';
 import BugReport from './Components/SideMenus/BugReport';
@@ -11,6 +12,7 @@ import MovieChart from './Components/SideMenus/MovieChart';
 import utilities from './helpers/utilities';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
+import ManageUsers from './pages/Admin/ManageUsers';
 import ReportingBug from './pages/Admin/ReportingBug';
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
@@ -65,6 +67,8 @@ function App() {
           <>
             <Route path='/dashboard-admin' element={<DashboardAdmin />} />
             <Route path='/reporting-bug' element={<ReportingBug />} />
+            <Route path='/reporting-bug/:id' element={<EditReportingBug />} />
+            <Route path='/manage-users' element={<ManageUsers />} />
           </>
         ) : isLogin && userRole === 'user' ? (
           <>
