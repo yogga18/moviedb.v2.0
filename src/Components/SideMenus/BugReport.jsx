@@ -85,7 +85,7 @@ const BugReport = () => {
       description: values.description,
       timeStamp: serverTimestamp(),
       image: resImageFromServer,
-      status: 'pending',
+      status: 'Pending',
     };
 
     dispatch(postBugReports(payload)).then((response) => {

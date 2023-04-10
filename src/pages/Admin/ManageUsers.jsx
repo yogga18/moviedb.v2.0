@@ -28,9 +28,6 @@ const ManageUsers = () => {
   const { getAllUsers } = useSelector((state) => state.AuthReducer);
 
   const handleSearch = () => {
-    console.log('judul', judul);
-    console.log('sotBy', sotBy);
-
     const filterUsers = getAllUsers.data
       .filter((item) => {
         return item.email.toLowerCase().includes(judul.toLowerCase());
@@ -55,7 +52,7 @@ const ManageUsers = () => {
     <Fragment>
       <Navigation />
       <Container fluid className='pt-5'>
-        <p className='text-end my-3'>Manage Users</p>
+        <h5 className='text-end my-3 me-3'>Manage Users Pages</h5>
         <Row className='gx-5 mx-3 manage-user-page-wrapper'>
           <Col md={4} className='side-a-wrapper mb-5'>
             <Card className='card-side-a-wrapper'>

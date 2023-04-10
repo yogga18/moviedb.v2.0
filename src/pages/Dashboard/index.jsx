@@ -17,8 +17,6 @@ const Dashboard = () => {
   const encryptedUser = localStorage.getItem('user');
   const bytes = utilities.decLocalStrg(encryptedUser);
 
-  console.log('bytes', bytes);
-
   const [hide, setHide] = useState(false);
 
   const { searchMovies } = useSelector((state) => state.MovieReducer);

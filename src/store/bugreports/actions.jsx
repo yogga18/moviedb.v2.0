@@ -1,9 +1,12 @@
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import {
   POST_BUG_REPORTS_REQUEST,
   POST_BUG_REPORTS_SUCCESS,
   POST_BUG_REPORTS_FAILURE,
+  GET_ALL_REPORTS_BUG_REQUEST,
+  GET_ALL_REPORTS_BUG_SUCCESS,
+  GET_ALL_REPORTS_BUG_FAILURE,
 } from './actionTypes';
 
 export const postBugReports = (payload) => {
@@ -33,6 +36,55 @@ export const postBugReports = (payload) => {
     } catch (error) {
       dispatch({
         type: POST_BUG_REPORTS_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          error: error.message,
+        },
+      });
+
+      return { success: false, data: [], error: payload.error };
+    }
+  };
+};
+
+export const fetchAllBugs = (payload) => {
+  let resultBugs = [];
+
+  return async (dispatch) => {
+    dispatch({
+      type: GET_ALL_REPORTS_BUG_REQUEST,
+      payload: {
+        isLoading: true,
+        data: [],
+        error: null,
+      },
+    });
+
+    try {
+      const querySnapshot = await getDocs(collection(db, 'bug_reports'));
+      querySnapshot.forEach((doc) => {
+        const res = {
+          id_document: doc.id,
+          ...doc.data(),
+        };
+
+        resultBugs.push(res);
+      });
+
+      dispatch({
+        type: GET_ALL_REPORTS_BUG_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: resultBugs,
+          error: null,
+        },
+      });
+
+      return { success: true, data: resultBugs };
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_REPORTS_BUG_FAILURE,
         payload: {
           isLoading: false,
           data: [],

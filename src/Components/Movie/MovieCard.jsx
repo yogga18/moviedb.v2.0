@@ -6,8 +6,6 @@ import { BASE_IMAGE_URL } from '../../config/api/api_helper';
 const MovieCard = ({ movies }) => {
   let { isLoading, data } = movies;
 
-  console.log('movies', data);
-
   return (
     <div>
       <h1>Listing Movie</h1>

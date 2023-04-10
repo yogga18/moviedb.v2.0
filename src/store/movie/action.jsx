@@ -198,7 +198,6 @@ export const getMoviesByGenre = (id) => {
       url: `${BASE_URL}discover/movie?with_genres=${id}&api_key=${API_KEY}`,
     })
       .then((response) => {
-        console.log('response.data', response.data.results);
         dispatch({
           type: GET_MOVIES_BY_GENRE_SUCCESS,
           payload: {

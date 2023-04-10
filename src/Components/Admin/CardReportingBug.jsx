@@ -11,31 +11,40 @@ const CardReportingBug = ({ data }) => {
     navigate(path);
   };
 
+  const convertDateFirebase = (date) => {
+    return new Date(date.seconds * 1000).toLocaleDateString();
+  };
+
   return (
     <Fragment>
       {data.map((item) => (
         <Card
-          key={item.id}
+          key={item.id_document}
           className='p-2 mb-3 card-bug-report-wrapper'
           onClick={() => {
-            handlerGoToSomeWhere(`/reporting-bug/${item.id}`);
+            handlerGoToSomeWhere(`/reporting-bug/${item.id_document}`);
           }}
         >
           <CardBody>
-            <div className='d-flex justify-content-end gap-3'>
-              <Badge
-                color={
-                  item.status === 'Pending'
-                    ? 'warning'
-                    : item.status === 'Progress'
-                    ? 'primary'
-                    : item.status === 'Done'
-                    ? 'success'
-                    : 'danger'
-                }
-              >
-                {item.status}
-              </Badge>
+            <div className='d-flex justify-content-between gap-3'>
+              <p>
+                Created At : <b>{convertDateFirebase(item.timeStamp)}</b>
+              </p>
+              <div>
+                <Badge
+                  color={
+                    item.status === 'Pending'
+                      ? 'warning'
+                      : item.status === 'Progress'
+                      ? 'primary'
+                      : item.status === 'Done'
+                      ? 'success'
+                      : 'danger'
+                  }
+                >
+                  {item.status}
+                </Badge>
+              </div>
             </div>
             <p>{item.title}</p>
             <p>{item.description}</p>

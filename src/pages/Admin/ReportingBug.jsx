@@ -1,4 +1,5 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Badge,
   Button,
@@ -11,97 +12,122 @@ import {
   Container,
   Input,
   Row,
+  Spinner,
 } from 'reactstrap';
 import CardReportingBug from '../../Components/Admin/CardReportingBug';
 import Navigation from '../../Components/Navigation/Navigation';
+import { fetchAllBugs } from '../../store/actions';
 import './Admin.scss';
 
 const ReportingBug = () => {
-  const DataDummy = [
-    {
-      id: 1,
-      title: 'Bug 1',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      title: 'Bug 2',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      status: 'Progress',
-    },
-    {
-      id: 3,
-      title: 'Bug 3',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      status: 'Done',
-    },
-    {
-      id: 4,
-      title: 'Bug 4',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      status: 'Decline',
-    },
-    {
-      id: 5,
-      title: 'Bug 5',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      status: 'Pending',
-    },
-  ];
+  const dispatch = useDispatch();
 
   const [rSelected, setRSelected] = useState(1);
   const [judul, setJudul] = useState('');
   const [sotBy, setSortBy] = useState('');
+  const [flagSearch, setFlagSearch] = useState(true);
+
+  const { getAllBugs } = useSelector((state) => state.BugReducer);
+
+  const [filterBugPending, setFilterBugPending] = useState([]);
+  const [filterBugProgress, setFilterBugProgress] = useState([]);
+  const [filterBugDone, setFilterBugDone] = useState([]);
+  const [filterBugDecline, setFilterBugDecline] = useState([]);
 
   // Pending
-  const BugPending = (DataDummy || []).filter(
+  const BugPending = (getAllBugs.data || []).filter(
     (item) => item.status === 'Pending'
   );
   const countBugPending = BugPending.length;
 
   // Progress
-  const BugProgress = (DataDummy || []).filter(
+  const BugProgress = (getAllBugs.data || []).filter(
     (item) => item.status === 'Progress'
   );
   const countBugProgress = BugProgress.length;
 
   // Done
-  const BugDone = (DataDummy || []).filter((item) => item.status === 'Done');
+  const BugDone = (getAllBugs.data || []).filter(
+    (item) => item.status === 'Done'
+  );
   const countBugDone = BugDone.length;
 
   // Decline
-  const BugDecline = (DataDummy || []).filter(
+  const BugDecline = (getAllBugs.data || []).filter(
     (item) => item.status === 'Decline'
   );
   const countBugDecline = BugDecline.length;
 
   // Func
   const handleSearch = () => {
-    console.log('judul', judul);
-    console.log('sotBy', sotBy);
+    if (rSelected === 1) {
+      const filterBug = BugPending.filter((item) => {
+        return item.title.toLowerCase().includes(judul.toLowerCase());
+      }).sort((a, b) => {
+        if (sotBy === 'asc') {
+          return a.title.localeCompare(b.title);
+        } else if (sotBy === 'desc') {
+          return b.title.localeCompare(a.title);
+        }
+      });
+
+      setFilterBugPending(filterBug);
+      setFlagSearch(!flagSearch);
+    } else if (rSelected === 2) {
+      const filterBug = BugProgress.filter((item) => {
+        return item.title.toLowerCase().includes(judul.toLowerCase());
+      }).sort((a, b) => {
+        if (sotBy === 'asc') {
+          return a.title.localeCompare(b.title);
+        } else if (sotBy === 'desc') {
+          return b.title.localeCompare(a.title);
+        }
+      });
+
+      setFilterBugProgress(filterBug);
+      setFlagSearch(!flagSearch);
+    } else if (rSelected === 3) {
+      const filterBug = BugDone.filter((item) => {
+        return item.title.toLowerCase().includes(judul.toLowerCase());
+      }).sort((a, b) => {
+        if (sotBy === 'asc') {
+          return a.title.localeCompare(b.title);
+        } else if (sotBy === 'desc') {
+          return b.title.localeCompare(a.title);
+        }
+      });
+
+      setFilterBugDone(filterBug);
+      setFlagSearch(!flagSearch);
+    } else {
+      const filterBug = BugDecline.data
+        .filter((item) => {
+          return item.title.toLowerCase().includes(judul.toLowerCase());
+        })
+        .sort((a, b) => {
+          if (sotBy === 'asc') {
+            return a.title.localeCompare(b.title);
+          } else if (sotBy === 'desc') {
+            return b.title.localeCompare(a.title);
+          }
+        });
+
+      setFilterBugDecline(filterBug);
+      setFlagSearch(!flagSearch);
+    }
   };
 
-  // Logging
-  console.log('DataDummy', DataDummy);
-
-  console.log('BugPending', BugPending);
-  console.log('countBugPending', countBugPending);
-
-  console.log('BugProgress', BugProgress);
-  console.log('countBugProgress', countBugProgress);
-
-  console.log('BugDone', BugDone);
-  console.log('countBugDone', countBugDone);
-
-  console.log('BugDecline', BugDecline);
-  console.log('countBugDecline', countBugDecline);
+  useEffect(() => {
+    dispatch(fetchAllBugs());
+  }, []);
 
   return (
     <Fragment>
       <Navigation />
       <Container fluid className='pt-5 reporting-bug-page-wrapper'>
-        <p className='text-end my-3'>Bug Reporting from User</p>
+        <p className='text-end my-3 me-3'>
+          <b>Bug Reporting from User</b>
+        </p>
         <ButtonGroup
           size='sm'
           className='d-flex justify-content-center m-auto gap-3'
@@ -147,11 +173,11 @@ const ReportingBug = () => {
           </Button>
         </ButtonGroup>
         <Row className='gx-5 m-3'>
-          <Col md={4} className='side-a-wrapper mb-5'>
-            <Card className='card-side-a-wrapper'>
+          <Col md={4} className='side-a-reporting-bug-wrapper mb-5'>
+            <Card className='card-side-a-reporting-bug-wrapper'>
               <CardHeader>
                 <p className='text-dark m-0'>
-                  <b>Search Users</b>
+                  <b>Form Search</b>
                 </p>
               </CardHeader>
               <CardBody>
@@ -163,22 +189,19 @@ const ReportingBug = () => {
                     onChange={(e) => {
                       setJudul(e.target.value);
                     }}
-                    placeholder='Search Users'
+                    placeholder='🪲🔍'
                   />
                 </div>
                 <div>
                   <select
                     className='form-control'
-                    defaultValue=''
+                    defaultValue='desc'
                     onChange={(e) => {
                       setSortBy(e.target.value);
                     }}
                   >
-                    <option value={''} disabled>
-                      Sort By
-                    </option>
-                    <option value={'dec'}>Admin</option>
-                    <option value={'asc'}>Member</option>
+                    <option value={'desc'}>Desc</option>
+                    <option value={'asc'}>Asc</option>
                   </select>
                 </div>
               </CardBody>
@@ -195,14 +218,47 @@ const ReportingBug = () => {
             </Card>
           </Col>
           <Col md={8}>
+            {getAllBugs.isLoading && <Spinner color='info' />}
             {rSelected === 1 ? (
-              <CardReportingBug data={BugPending} />
+              <>
+                {flagSearch ? (
+                  <CardReportingBug data={BugPending} />
+                ) : !flagSearch && filterBugPending.length === 0 ? (
+                  <p>Report Bug Not Found</p>
+                ) : (
+                  <CardReportingBug data={filterBugPending} />
+                )}
+              </>
             ) : rSelected === 2 ? (
-              <CardReportingBug data={BugProgress} />
+              <>
+                {flagSearch ? (
+                  <CardReportingBug data={BugProgress} />
+                ) : !flagSearch && filterBugProgress.length === 0 ? (
+                  <p>Report Bug Not Found</p>
+                ) : (
+                  <CardReportingBug data={filterBugProgress} />
+                )}
+              </>
             ) : rSelected === 3 ? (
-              <CardReportingBug data={BugDone} />
+              <>
+                {flagSearch ? (
+                  <CardReportingBug data={BugDone} />
+                ) : !flagSearch && filterBugDone.length === 0 ? (
+                  <p>Report Bug Not Found</p>
+                ) : (
+                  <CardReportingBug data={filterBugDone} />
+                )}
+              </>
             ) : (
-              <CardReportingBug data={BugDecline} />
+              <>
+                {flagSearch ? (
+                  <CardReportingBug data={BugDecline} />
+                ) : !flagSearch && filterBugDecline.length === 0 ? (
+                  <p>Report Bug Not Found</p>
+                ) : (
+                  <CardReportingBug data={filterBugDecline} />
+                )}
+              </>
             )}
           </Col>
         </Row>
