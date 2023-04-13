@@ -123,6 +123,8 @@ const ReportingBug = () => {
     dispatch(fetchAllBugs());
   }, []);
 
+  console.log('BugPending', BugPending);
+
   return (
     <Fragment>
       <Navigation />

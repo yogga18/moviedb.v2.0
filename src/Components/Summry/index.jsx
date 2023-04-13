@@ -3,6 +3,7 @@ import { Button } from 'reactstrap';
 import PropTypes from 'prop-types';
 import * as XLSX from 'xlsx';
 import utilities from '../../config/function/utilities';
+import { toast } from 'react-toastify';
 
 const Summry = ({ data }) => {
   // Additional Variable
@@ -13,18 +14,22 @@ const Summry = ({ data }) => {
   };
 
   const exportXlsx = () => {
-    const sheet = data.map((item, index) => ({
-      No: index + 1,
-      Judul: item.title || '-',
-      Tanggal_Release: convertDate(item.release_date),
-      Rating: item.vote_average || '-',
-      Review: item.overview || '-',
-    }));
+    if (data.length === 0) {
+      return toast.warning('Oppss... Data is empty');
+    } else {
+      const sheet = data.map((item, index) => ({
+        No: index + 1,
+        Judul: item.title || '-',
+        Tanggal_Release: convertDate(item.release_date),
+        Rating: item.vote_average || '-',
+        Review: item.overview || '-',
+      }));
 
-    let wb = XLSX.utils.book_new();
-    let ws = XLSX.utils.json_to_sheet(sheet);
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-    XLSX.writeFile(wb, 'Summry_Movies.xlsx');
+      let wb = XLSX.utils.book_new();
+      let ws = XLSX.utils.json_to_sheet(sheet);
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+      XLSX.writeFile(wb, 'Summry_Movies.xlsx');
+    }
   };
 
   const unduhPdf = () => {

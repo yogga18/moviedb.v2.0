@@ -5,7 +5,15 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from '@firebase/auth';
-import { addDoc, collection, getDocs, where, query } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  where,
+  query,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 import { db } from '../../config/firebase';
 
 import {
@@ -30,6 +38,9 @@ import {
   GET_ALL_USERS_REQUEST,
   GET_ALL_USERS_SUCCESS,
   GET_ALL_USERS_FAILURE,
+  GET_USER_BY_ID_REQUEST,
+  GET_USER_BY_ID_SUCCESS,
+  GET_USER_BY_ID_FAILURE,
 } from './actionTypes';
 
 export const registerWithEmail = (payload) => {
@@ -343,6 +354,49 @@ export const fetchAllUsers = (payload) => {
         payload: {
           isLoading: false,
           data: [],
+          error: error.message,
+        },
+      });
+    }
+  };
+};
+
+export const fetcUserById = (payload) => {
+  let dataFireStore;
+
+  return async (dispatch) => {
+    dispatch({
+      type: GET_USER_BY_ID_REQUEST,
+      payload: {
+        isLoading: true,
+        data: {},
+        error: null,
+      },
+    });
+
+    try {
+      const userRef = doc(db, 'users', payload.id);
+      const docSnapshot = await getDoc(userRef);
+
+      if (docSnapshot.exists()) {
+        const userData = { id: docSnapshot.id, ...docSnapshot.data() }; // get data from object and add id from document id in firestore database
+        dataFireStore = userData;
+      }
+
+      dispatch({
+        type: GET_USER_BY_ID_SUCCESS,
+        payload: {
+          isLoading: true,
+          data: dataFireStore,
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_USER_BY_ID_FAILURE,
+        payload: {
+          isLoading: true,
+          data: {},
           error: error.message,
         },
       });

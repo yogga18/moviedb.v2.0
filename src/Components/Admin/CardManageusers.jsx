@@ -2,16 +2,29 @@ import React, { Fragment } from 'react';
 import { Badge, Card, CardBody } from 'reactstrap';
 import PropTypes from 'prop-types';
 import './AdminComponents.scss';
+import { useNavigate } from 'react-router';
 
 const CardManageusers = ({ data }) => {
+  const navigate = useNavigate();
+
   const convertDateFirebase = (date) => {
-    return new Date(date.seconds * 1000).toLocaleDateString();
+    return new Date(date?.seconds * 1000).toLocaleDateString();
+  };
+
+  const goToSomeWhere = (id) => {
+    navigate(`/manage-users/${id}`);
   };
 
   return (
     <Fragment>
-      {data.map((item) => (
-        <Card className='card-side-b-wrapper mb-3' key={item.id_document}>
+      {data?.map((item) => (
+        <Card
+          className='card-side-b-wrapper mb-3'
+          key={item.id_document}
+          onClick={() => {
+            goToSomeWhere(item.id_document);
+          }}
+        >
           <CardBody>
             <div className='d-flex justify-content-end'>
               <p>
@@ -32,10 +45,10 @@ const CardManageusers = ({ data }) => {
   );
 };
 
-CardManageusers.PropTypes = {
-  email: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+CardManageusers.propTypes = {
+  email: PropTypes.string,
+  date: PropTypes.string,
+  data: PropTypes.array,
 };
 
 export default CardManageusers;

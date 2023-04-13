@@ -20,6 +20,9 @@ import {
   GET_ALL_USERS_REQUEST,
   GET_ALL_USERS_SUCCESS,
   GET_ALL_USERS_FAILURE,
+  GET_USER_BY_ID_REQUEST,
+  GET_USER_BY_ID_SUCCESS,
+  GET_USER_BY_ID_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -61,6 +64,11 @@ const initialState = {
   getAllUsers: {
     isLoading: false,
     data: [],
+    error: null,
+  },
+  getUserById: {
+    isLoading: false,
+    data: {},
     error: null,
   },
 };
@@ -309,6 +317,39 @@ const regisWithEmailReducer = (state = initialState, action) => {
           ...state.getAllUsers,
           isLoading: false,
           data: [],
+          error: action.payload.error,
+        },
+      });
+
+    case GET_USER_BY_ID_REQUEST:
+      return (state = {
+        ...state,
+        getUserById: {
+          ...state.getUserById,
+          isLoading: true,
+          data: {},
+          error: null,
+        },
+      });
+
+    case GET_USER_BY_ID_SUCCESS:
+      return (state = {
+        ...state,
+        getUserById: {
+          ...state.getUserById,
+          isLoading: false,
+          data: action.payload.data ?? {},
+          error: null,
+        },
+      });
+
+    case GET_USER_BY_ID_FAILURE:
+      return (state = {
+        ...state,
+        getUserById: {
+          ...state.getUserById,
+          isLoading: false,
+          data: {},
           error: action.payload.error,
         },
       });

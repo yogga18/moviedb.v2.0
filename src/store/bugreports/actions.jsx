@@ -1,4 +1,12 @@
-import { addDoc, collection, getDocs, where, query } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  getDocs,
+  where,
+  query,
+  getDoc,
+  doc,
+} from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import {
   POST_BUG_REPORTS_REQUEST,
@@ -10,6 +18,9 @@ import {
   GET_ALL_REPORTS_BUG_USER_SIDE_REQUEST,
   GET_ALL_REPORTS_BUG_USER_SIDE_SUCCESS,
   GET_ALL_REPORTS_BUG_USER_SIDE_FAILURE,
+  GET_REPORTS_BUG_BY_ID_REQUEST,
+  GET_REPORTS_BUG_BY_ID_SUCCESS,
+  GET_REPORTS_BUG_BY_ID_FAILURE,
 } from './actionTypes';
 
 export const postBugReports = (payload) => {
@@ -144,6 +155,51 @@ export const fetchAllBugsUserSide = (payload) => {
       });
 
       return { success: false, error };
+    }
+  };
+};
+
+export const fetchBugById = (payload) => {
+  let dataFireStore;
+
+  return async (dispatch) => {
+    dispatch({
+      type: GET_REPORTS_BUG_BY_ID_REQUEST,
+      payload: {
+        isLoading: true,
+        data: {},
+        error: null,
+      },
+    });
+
+    try {
+      const bugsReportsRef = doc(db, 'bug_reports', payload.id);
+      const docSnapshot = await getDoc(bugsReportsRef);
+
+      if (docSnapshot.exists()) {
+        const bugData = { id_document: docSnapshot.id, ...docSnapshot.data() };
+        dataFireStore = bugData;
+      }
+
+      console.log('dataFireStore', dataFireStore);
+
+      dispatch({
+        type: GET_REPORTS_BUG_BY_ID_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: dataFireStore,
+          error: null,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_REPORTS_BUG_BY_ID_FAILURE,
+        payload: {
+          isLoading: false,
+          data: {},
+          error: error.message,
+        },
+      });
     }
   };
 };

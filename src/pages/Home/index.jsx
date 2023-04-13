@@ -18,6 +18,7 @@ import { Spinner } from 'reactstrap';
 
 const HomePage = () => {
   const dispatch = useDispatch();
+  const flagLogin = JSON.parse(localStorage.getItem('isLogin'));
 
   const [hide, setHide] = useState(false);
 
@@ -65,12 +66,9 @@ const HomePage = () => {
       <Hero data={trendingMovies} />
       <SearchMovie displayHide={displayHide} />
 
-      {dataAllMovies.length > 0 && !hide ? (
-        <Summry data={dataAllMovies} />
-      ) : dataAllMovies.length > 0 && hide ? (
+      {flagLogin === true && hide === false && <Summry data={dataAllMovies} />}
+      {flagLogin === true && hide === true && (
         <Summry data={searchMovies.data} />
-      ) : (
-        <Spinner color='danger' />
       )}
 
       {!hide && (

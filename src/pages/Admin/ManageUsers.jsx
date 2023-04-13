@@ -48,6 +48,8 @@ const ManageUsers = () => {
     dispatch(fetchAllUsers());
   }, []);
 
+  console.log('user', getAllUsers);
+
   return (
     <Fragment>
       <Navigation />

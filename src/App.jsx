@@ -22,6 +22,7 @@ import Genres from './pages/Genres';
 import GendreDetail from './pages/Genres/GendreDetail';
 import HomePage from './pages/Home';
 import DetailMessage from './pages/User/TrackBug/DetailMessage';
+import UserDetail from './Components/Admin/UserDetail';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -70,6 +71,7 @@ function App() {
             <Route path='/reporting-bug' element={<ReportingBug />} />
             <Route path='/reporting-bug/:id' element={<EditReportingBug />} />
             <Route path='/manage-users' element={<ManageUsers />} />
+            <Route path='/manage-users/:id' element={<UserDetail />} />
           </>
         ) : isLogin && userRole === 'user' ? (
           <>

@@ -2,37 +2,37 @@ import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { Container } from 'reactstrap';
-import { fetchBugById } from '../../store/actions';
+import { fetcUserById } from '../../store/actions';
 import Navigation from '../Navigation/Navigation';
 
-const EditReportingBug = () => {
+const UserDetail = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { getBugsById } = useSelector((state) => state.BugReducer);
+  const { getUserById } = useSelector((state) => state.AuthReducer);
 
   const handleFetch = () => {
     const payload = {
       id,
     };
 
-    dispatch(fetchBugById(payload));
+    dispatch(fetcUserById(payload));
   };
 
   useEffect(() => {
     handleFetch();
   }, []);
 
-  console.log(getBugsById);
+  console.log('getUserById', getUserById);
 
   return (
     <Fragment>
       <Navigation />
       <Container fluid className='pt-5'>
-        <p className='text-center mt-5'>Get Reporting Bug By Id</p>
+        <h1 className='mt-3 text-center'>UserDetail</h1>
       </Container>
     </Fragment>
   );
 };
 
-export default EditReportingBug;
+export default UserDetail;
