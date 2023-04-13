@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerWithEmail, createUserRole } from '../../store/actions';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Register = () => {
 
   const [password1, setPassword1] = useState(true);
   const [password2, setPassword2] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
 
   const { regisWithEmail, userRole } = useSelector(
     (state) => state.AuthReducer
@@ -76,7 +78,11 @@ const Register = () => {
       confirmPassword: values.confirmPassword,
     };
 
-    handleRegisterSubmit(payload);
+    if (isVerified) {
+      handleRegisterSubmit(payload);
+    } else {
+      toast.warning('Please verify that you are not a robot');
+    }
   };
 
   const formik = useFormik({
@@ -118,6 +124,14 @@ const Register = () => {
     // 3. Submit handler
     onSubmit: save,
   });
+
+  const handleReCapcha = (response) => {
+    if (response) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
+    }
+  };
 
   return (
     <Fragment>
@@ -233,6 +247,12 @@ const Register = () => {
                       </div>
                     ) : null}
                   </FormGroup>
+
+                  <FormGroup></FormGroup>
+                  <ReCAPTCHA
+                    sitekey='6LfrEYIlAAAAAMm0dVHE_ZL8asnKjUKg2kQH0QXp'
+                    onChange={handleReCapcha}
+                  />
 
                   <Button
                     type='submit'

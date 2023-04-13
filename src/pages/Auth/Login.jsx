@@ -25,12 +25,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import utilities from '../../helpers/utilities';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [password1, setPassword1] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
 
   const { login } = useSelector((state) => state.AuthReducer);
 
@@ -44,13 +46,17 @@ const Login = () => {
       password: values.password,
     };
 
-    dispatch(loginWithEmail(payload)).then((response) => {
-      if (response.success) {
-        checkingRole(response.data);
-      } else {
-        toast.warning(response.error.message);
-      }
-    });
+    if (isVerified) {
+      dispatch(loginWithEmail(payload)).then((response) => {
+        if (response.success) {
+          checkingRole(response.data);
+        } else {
+          toast.warning(response.error.message);
+        }
+      });
+    } else {
+      toast.warning('Please verify that you are not a robot');
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -117,6 +123,14 @@ const Login = () => {
     onSubmit: handleEmailLogin,
   });
 
+  const handleReCapcha = (response) => {
+    if (response) {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
+    }
+  };
+
   return (
     <Fragment>
       <Navigation />
@@ -177,6 +191,11 @@ const Login = () => {
                       </div>
                     ) : null}
                   </FormGroup>
+
+                  <ReCAPTCHA
+                    sitekey='6LfrEYIlAAAAAMm0dVHE_ZL8asnKjUKg2kQH0QXp'
+                    onChange={handleReCapcha}
+                  />
 
                   <div className='mt-5 d-flex gap-3 justify-content-end'>
                     <Button
