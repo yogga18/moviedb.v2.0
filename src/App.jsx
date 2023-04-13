@@ -5,10 +5,10 @@ import { Spinner } from 'reactstrap';
 import EditReportingBug from './Components/Admin/EditReportingBug';
 import DetailMovies from './Components/Movie/DetailMovies';
 import DetailProfile from './Components/Profile/DetailProfile';
-import BugReport from './Components/SideMenus/BugReport';
-import Forum from './Components/SideMenus/Forum';
-import Message from './Components/SideMenus/Message';
-import MovieChart from './Components/SideMenus/MovieChart';
+import BugReport from './pages/User/ReportingBug/BugReport';
+import Forum from './pages/User/Forum/Forum';
+import Message from './pages/User/TrackBug/Message';
+import MovieChart from './pages/User/FavMovies/MovieChart';
 import utilities from './helpers/utilities';
 import NotFound from './pages/404';
 import AboutPage from './pages/About';
@@ -21,6 +21,7 @@ import DashboardAdmin from './pages/Dashboard/DashboardAdmin';
 import Genres from './pages/Genres';
 import GendreDetail from './pages/Genres/GendreDetail';
 import HomePage from './pages/Home';
+import DetailMessage from './pages/User/TrackBug/DetailMessage';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -78,6 +79,7 @@ function App() {
             <Route path='/forum' element={<Forum />} />
             <Route path='/bug-report' element={<BugReport />} />
             <Route path='/messages' element={<Message />} />
+            <Route path='/messages/:id' element={<DetailMessage />} />
           </>
         ) : null}
 

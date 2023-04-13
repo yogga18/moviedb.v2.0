@@ -24,7 +24,7 @@ const ReportingBug = () => {
 
   const [rSelected, setRSelected] = useState(1);
   const [judul, setJudul] = useState('');
-  const [sotBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('');
   const [flagSearch, setFlagSearch] = useState(true);
 
   const { getAllBugs } = useSelector((state) => state.BugReducer);
@@ -33,6 +33,8 @@ const ReportingBug = () => {
   const [filterBugProgress, setFilterBugProgress] = useState([]);
   const [filterBugDone, setFilterBugDone] = useState([]);
   const [filterBugDecline, setFilterBugDecline] = useState([]);
+
+  console.log('materi', getAllBugs.data);
 
   // Pending
   const BugPending = (getAllBugs.data || []).filter(
@@ -64,9 +66,9 @@ const ReportingBug = () => {
       const filterBug = BugPending.filter((item) => {
         return item.title.toLowerCase().includes(judul.toLowerCase());
       }).sort((a, b) => {
-        if (sotBy === 'asc') {
+        if (sortBy === 'asc') {
           return a.title.localeCompare(b.title);
-        } else if (sotBy === 'desc') {
+        } else if (sortBy === 'desc') {
           return b.title.localeCompare(a.title);
         }
       });
@@ -77,9 +79,9 @@ const ReportingBug = () => {
       const filterBug = BugProgress.filter((item) => {
         return item.title.toLowerCase().includes(judul.toLowerCase());
       }).sort((a, b) => {
-        if (sotBy === 'asc') {
+        if (sortBy === 'asc') {
           return a.title.localeCompare(b.title);
-        } else if (sotBy === 'desc') {
+        } else if (sortBy === 'desc') {
           return b.title.localeCompare(a.title);
         }
       });
@@ -90,9 +92,9 @@ const ReportingBug = () => {
       const filterBug = BugDone.filter((item) => {
         return item.title.toLowerCase().includes(judul.toLowerCase());
       }).sort((a, b) => {
-        if (sotBy === 'asc') {
+        if (sortBy === 'asc') {
           return a.title.localeCompare(b.title);
-        } else if (sotBy === 'desc') {
+        } else if (sortBy === 'desc') {
           return b.title.localeCompare(a.title);
         }
       });
@@ -105,9 +107,9 @@ const ReportingBug = () => {
           return item.title.toLowerCase().includes(judul.toLowerCase());
         })
         .sort((a, b) => {
-          if (sotBy === 'asc') {
+          if (sortBy === 'asc') {
             return a.title.localeCompare(b.title);
-          } else if (sotBy === 'desc') {
+          } else if (sortBy === 'desc') {
             return b.title.localeCompare(a.title);
           }
         });
@@ -222,41 +224,62 @@ const ReportingBug = () => {
             {rSelected === 1 ? (
               <>
                 {flagSearch ? (
-                  <CardReportingBug data={BugPending} />
+                  <CardReportingBug
+                    data={BugPending}
+                    basePath={'reporting-bug'}
+                  />
                 ) : !flagSearch && filterBugPending.length === 0 ? (
                   <p>Report Bug Not Found</p>
                 ) : (
-                  <CardReportingBug data={filterBugPending} />
+                  <CardReportingBug
+                    data={filterBugPending}
+                    basePath={'reporting-bug'}
+                  />
                 )}
               </>
             ) : rSelected === 2 ? (
               <>
                 {flagSearch ? (
-                  <CardReportingBug data={BugProgress} />
+                  <CardReportingBug
+                    data={BugProgress}
+                    basePath={'reporting-bug'}
+                  />
                 ) : !flagSearch && filterBugProgress.length === 0 ? (
                   <p>Report Bug Not Found</p>
                 ) : (
-                  <CardReportingBug data={filterBugProgress} />
+                  <CardReportingBug
+                    data={filterBugProgress}
+                    basePath={'reporting-bug'}
+                  />
                 )}
               </>
             ) : rSelected === 3 ? (
               <>
                 {flagSearch ? (
-                  <CardReportingBug data={BugDone} />
+                  <CardReportingBug data={BugDone} basePath={'reporting-bug'} />
                 ) : !flagSearch && filterBugDone.length === 0 ? (
                   <p>Report Bug Not Found</p>
                 ) : (
-                  <CardReportingBug data={filterBugDone} />
+                  <CardReportingBug
+                    data={filterBugDone}
+                    basePath={'reporting-bug'}
+                  />
                 )}
               </>
             ) : (
               <>
                 {flagSearch ? (
-                  <CardReportingBug data={BugDecline} />
+                  <CardReportingBug
+                    data={BugDecline}
+                    basePath={'reporting-bug'}
+                  />
                 ) : !flagSearch && filterBugDecline.length === 0 ? (
                   <p>Report Bug Not Found</p>
                 ) : (
-                  <CardReportingBug data={filterBugDecline} />
+                  <CardReportingBug
+                    data={filterBugDecline}
+                    basePath={'reporting-bug'}
+                  />
                 )}
               </>
             )}

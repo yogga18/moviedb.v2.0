@@ -1,4 +1,4 @@
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs, where, query } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import {
   POST_BUG_REPORTS_REQUEST,
@@ -7,6 +7,9 @@ import {
   GET_ALL_REPORTS_BUG_REQUEST,
   GET_ALL_REPORTS_BUG_SUCCESS,
   GET_ALL_REPORTS_BUG_FAILURE,
+  GET_ALL_REPORTS_BUG_USER_SIDE_REQUEST,
+  GET_ALL_REPORTS_BUG_USER_SIDE_SUCCESS,
+  GET_ALL_REPORTS_BUG_USER_SIDE_FAILURE,
 } from './actionTypes';
 
 export const postBugReports = (payload) => {
@@ -93,6 +96,54 @@ export const fetchAllBugs = (payload) => {
       });
 
       return { success: false, data: [], error: payload.error };
+    }
+  };
+};
+
+export const fetchAllBugsUserSide = (payload) => {
+  let dataFireStore = [];
+  return async (dispatch) => {
+    dispatch({
+      type: GET_ALL_REPORTS_BUG_USER_SIDE_REQUEST,
+      payload: {
+        isLoading: true,
+        data: [],
+        error: null,
+      },
+    });
+
+    try {
+      const usersRef = collection(db, 'bug_reports');
+      const q = query(usersRef, where('uuid', '==', payload)); // query getData by uuid
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+          const userData = { id_document: doc.id, ...doc.data() };
+          dataFireStore.push(userData);
+        });
+      }
+
+      dispatch({
+        type: GET_ALL_REPORTS_BUG_USER_SIDE_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: dataFireStore,
+          error: null,
+        },
+      });
+
+      return { success: true, data: dataFireStore };
+    } catch (error) {
+      dispatch({
+        type: GET_ALL_REPORTS_BUG_USER_SIDE_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          error: error.message,
+        },
+      });
+
+      return { success: false, error };
     }
   };
 };

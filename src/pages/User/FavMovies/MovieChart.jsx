@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Container } from 'reactstrap';
-import Navigation from '../Navigation/Navigation';
+import Navigation from '../../../Components/Navigation/Navigation';
 
 const MovieChart = () => {
   return (

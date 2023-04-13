@@ -5,6 +5,9 @@ import {
   GET_ALL_REPORTS_BUG_REQUEST,
   GET_ALL_REPORTS_BUG_SUCCESS,
   GET_ALL_REPORTS_BUG_FAILURE,
+  GET_ALL_REPORTS_BUG_USER_SIDE_REQUEST,
+  GET_ALL_REPORTS_BUG_USER_SIDE_SUCCESS,
+  GET_ALL_REPORTS_BUG_USER_SIDE_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -14,6 +17,11 @@ const initialState = {
     error: null,
   },
   getAllBugs: {
+    isLoading: false,
+    data: [],
+    error: null,
+  },
+  getAllBugsUserSide: {
     isLoading: false,
     data: [],
     error: null,
@@ -82,6 +90,39 @@ const postBugReportsReducer = (state = initialState, action) => {
         ...state,
         getAllBugs: {
           ...state.getAllBugs,
+          isLoading: false,
+          data: [],
+          error: action.payload.error,
+        },
+      });
+
+    case GET_ALL_REPORTS_BUG_USER_SIDE_REQUEST:
+      return (state = {
+        ...state,
+        getAllBugsUserSide: {
+          ...state.getAllBugsUserSide,
+          isLoading: true,
+          data: [],
+          error: null,
+        },
+      });
+
+    case GET_ALL_REPORTS_BUG_USER_SIDE_SUCCESS:
+      return (state = {
+        ...state,
+        getAllBugsUserSide: {
+          ...state.getAllBugsUserSide,
+          isLoading: false,
+          data: action.payload.data ?? [],
+          error: null,
+        },
+      });
+
+    case GET_ALL_REPORTS_BUG_USER_SIDE_FAILURE:
+      return (state = {
+        ...state,
+        getAllBugsUserSide: {
+          ...state.getAllBugsUserSide,
           isLoading: false,
           data: [],
           error: action.payload.error,

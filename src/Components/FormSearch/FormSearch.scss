@@ -1,0 +1,14 @@
+// variable
+$boxShdw: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+$mobileStageOne: 768px;
+
+.form-search-notification-wrapper {
+  position: fixed;
+  box-shadow: $boxShdw;
+  width: 28%;
+
+  @media (max-width: $mobileStageOne) {
+    width: 100%;
+    position: static;
+  }
+}

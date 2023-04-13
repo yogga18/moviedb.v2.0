@@ -40,7 +40,7 @@ const SideMenus = () => {
             navigateTo('/bug-report');
           }}
         >
-          <i class='bi bi-megaphone' />
+          <i className='bi bi-megaphone' />
         </Button>
         <Button
           outline
@@ -50,7 +50,7 @@ const SideMenus = () => {
             navigateTo('/messages');
           }}
         >
-          <i class='bi bi-bell'></i>
+          <i className='bi bi-bell'></i>
         </Button>
       </div>
     </Fragment>

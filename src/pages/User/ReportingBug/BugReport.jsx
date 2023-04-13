@@ -10,14 +10,14 @@ import {
   Label,
   Row,
 } from 'reactstrap';
-import Navigation from '../Navigation/Navigation';
+import Navigation from '../../../Components/Navigation/Navigation';
 import * as Yup from 'yup';
-import utilities from '../../helpers/utilities';
+import utilities from '../../../helpers/utilities';
 import { serverTimestamp } from 'firebase/firestore';
-import { storage } from '../../config/firebase';
+import { storage } from '../../../config/firebase';
 import { getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage';
 import { useDispatch, useSelector } from 'react-redux';
-import { postBugReports } from '../../store/actions';
+import { postBugReports } from '../../../store/actions';
 import { toast } from 'react-toastify';
 
 const BugReport = () => {

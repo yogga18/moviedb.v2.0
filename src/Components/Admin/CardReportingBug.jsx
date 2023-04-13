@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './AdminComponents.scss';
 import { useNavigate } from 'react-router-dom';
 
-const CardReportingBug = ({ data }) => {
+const CardReportingBug = ({ data, basePath }) => {
   const navigate = useNavigate();
 
   const handlerGoToSomeWhere = (path) => {
@@ -17,12 +17,12 @@ const CardReportingBug = ({ data }) => {
 
   return (
     <Fragment>
-      {data.map((item) => (
+      {data?.map((item) => (
         <Card
           key={item.id_document}
           className='p-2 mb-3 card-bug-report-wrapper'
           onClick={() => {
-            handlerGoToSomeWhere(`/reporting-bug/${item.id_document}`);
+            handlerGoToSomeWhere(`/${basePath}/${item.id_document}`);
           }}
         >
           <CardBody>
@@ -57,6 +57,7 @@ const CardReportingBug = ({ data }) => {
 
 CardReportingBug.propTypes = {
   data: PropTypes.array.isRequired,
+  basePath: PropTypes.string.isRequired,
 };
 
 export default CardReportingBug;
