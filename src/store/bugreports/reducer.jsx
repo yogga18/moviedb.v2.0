@@ -11,6 +11,9 @@ import {
   GET_REPORTS_BUG_BY_ID_REQUEST,
   GET_REPORTS_BUG_BY_ID_SUCCESS,
   GET_REPORTS_BUG_BY_ID_FAILURE,
+  UPDATE_REPORTS_BUG_REQUEST,
+  UPDATE_REPORTS_BUG_SUCCESS,
+  UPDATE_REPORTS_BUG_FAILURE,
 } from './actionTypes';
 
 const initialState = {
@@ -32,6 +35,11 @@ const initialState = {
   getBugsById: {
     isLoading: false,
     data: {},
+    error: null,
+  },
+  updateBugs: {
+    isLoading: false,
+    data: [],
     error: null,
   },
 };
@@ -166,6 +174,39 @@ const postBugReportsReducer = (state = initialState, action) => {
           ...state.getBugsById,
           isLoading: false,
           data: {},
+          error: action.payload.error,
+        },
+      });
+
+    case UPDATE_REPORTS_BUG_REQUEST:
+      return (state = {
+        ...state,
+        updateBugs: {
+          ...state.updateBugs,
+          isLoading: true,
+          data: [],
+          error: null,
+        },
+      });
+
+    case UPDATE_REPORTS_BUG_SUCCESS:
+      return (state = {
+        ...state,
+        updateBugs: {
+          ...state.updateBugs,
+          isLoading: false,
+          data: action.payload.data ?? [],
+          error: null,
+        },
+      });
+
+    case UPDATE_REPORTS_BUG_FAILURE:
+      return (state = {
+        ...state,
+        updateBugs: {
+          ...state.updateBugs,
+          isLoading: false,
+          data: [],
           error: action.payload.error,
         },
       });

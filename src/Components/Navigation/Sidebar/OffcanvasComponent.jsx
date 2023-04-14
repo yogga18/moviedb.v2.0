@@ -18,7 +18,7 @@ const OffcanvasComponent = () => {
       <Button
         color='primary'
         onClick={toggleOffcanvas}
-        outline
+        // outline
         title='expand menu'
         style={{
           position: 'fixed',

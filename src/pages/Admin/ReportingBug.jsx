@@ -34,8 +34,6 @@ const ReportingBug = () => {
   const [filterBugDone, setFilterBugDone] = useState([]);
   const [filterBugDecline, setFilterBugDecline] = useState([]);
 
-  console.log('materi', getAllBugs.data);
-
   // Pending
   const BugPending = (getAllBugs.data || []).filter(
     (item) => item.status === 'Pending'
@@ -122,8 +120,6 @@ const ReportingBug = () => {
   useEffect(() => {
     dispatch(fetchAllBugs());
   }, []);
-
-  console.log('BugPending', BugPending);
 
   return (
     <Fragment>

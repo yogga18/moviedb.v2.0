@@ -6,6 +6,7 @@ import {
   query,
   getDoc,
   doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '../../config/firebase';
 import {
@@ -21,6 +22,9 @@ import {
   GET_REPORTS_BUG_BY_ID_REQUEST,
   GET_REPORTS_BUG_BY_ID_SUCCESS,
   GET_REPORTS_BUG_BY_ID_FAILURE,
+  UPDATE_REPORTS_BUG_REQUEST,
+  UPDATE_REPORTS_BUG_SUCCESS,
+  UPDATE_REPORTS_BUG_FAILURE,
 } from './actionTypes';
 
 export const postBugReports = (payload) => {
@@ -181,8 +185,6 @@ export const fetchBugById = (payload) => {
         dataFireStore = bugData;
       }
 
-      console.log('dataFireStore', dataFireStore);
-
       dispatch({
         type: GET_REPORTS_BUG_BY_ID_SUCCESS,
         payload: {
@@ -200,6 +202,48 @@ export const fetchBugById = (payload) => {
           error: error.message,
         },
       });
+    }
+  };
+};
+
+export const putBug = (payload) => {
+  return async (dispatch) => {
+    dispatch({
+      type: UPDATE_REPORTS_BUG_REQUEST,
+      payload: {
+        isLoading: true,
+        data: {},
+        error: null,
+      },
+    });
+
+    try {
+      const res = await updateDoc(
+        doc(db, 'bug_reports', payload.id_document),
+        payload
+      );
+
+      dispatch({
+        type: UPDATE_REPORTS_BUG_SUCCESS,
+        payload: {
+          isLoading: false,
+          data: res,
+          error: null,
+        },
+      });
+
+      return { success: true, data: res };
+    } catch (error) {
+      dispatch({
+        type: UPDATE_REPORTS_BUG_FAILURE,
+        payload: {
+          isLoading: false,
+          data: [],
+          error: error.message,
+        },
+      });
+
+      return { success: false, data: [], error: payload.error };
     }
   };
 };
