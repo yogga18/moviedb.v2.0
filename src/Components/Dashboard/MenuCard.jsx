@@ -12,7 +12,11 @@ const MenuCard = ({ title, value, bgColor, detailPath }) => {
               <p className='text-dark'>
                 <b>{title}</b>
               </p>
-              <h4 className='mb-0 text-end'>{value}</h4>
+              <h4 className='mb-0 text-end'>
+                <p className='text-dark'>
+                  <b>{value}</b>
+                </p>
+              </h4>
             </div>
             {/* <div className='align-self-center'>
               <i className='bi bi-airplane-engines-fill'></i>
